@@ -1,0 +1,17 @@
+{
+    "identifier": "Mecham.ESLint",
+    "name": "ESLint",
+    "author": "Justin Mecham",
+    "description": "Lorem ipsum, dolor sit amet.",
+    "version": "1.0",
+    
+    "main": "main.js",
+    
+    "activationEvents": [
+        "onLanguage:html"
+    ],
+    
+    "entitlements": {
+        "files": "readwrite", "process": true
+    }
+}
