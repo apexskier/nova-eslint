@@ -2,16 +2,17 @@
     "identifier": "Mecham.ESLint",
     "name": "ESLint",
     "author": "Justin Mecham",
-    "description": "Lorem ipsum, dolor sit amet.",
+    "description": "Integrates with ESLint to provide contextual issues in Nova.",
     "version": "1.0",
-    
     "main": "main.js",
-    
     "activationEvents": [
-        "onLanguage:html"
+        "onLanguage:javascript",
+        "onLanguage:typescript",
+        "onLanguage:jsx",
+        "onLanguage:tsx",
+        "onWorkspaceContains:.eslintrc.*",
     ],
-    
     "entitlements": {
-        "files": "readwrite", "process": true
+        "process": true
     }
 }
