@@ -2,7 +2,7 @@
 // ESLint Extension for Nova
 // LinterProcess.js
 //
-// Copyright © 2019 Justin Mecham. All rights reserved.
+// Copyright © 2019-2020 Justin Mecham. All rights reserved.
 // 
 
 const Offense = require("Offense");

@@ -2,7 +2,7 @@
 // ESLint Extension for Nova
 // Offense.js
 //
-// Copyright © 2019 Justin Mecham. All rights reserved.
+// Copyright © 2019-2020 Justin Mecham. All rights reserved.
 // 
 
 class Offense {

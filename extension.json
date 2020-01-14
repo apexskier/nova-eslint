@@ -1,16 +1,17 @@
 {
     "identifier": "Mecham.ESLint",
     "name": "ESLint",
-    "author": "Justin Mecham",
+    "vendor": "Mecham",
     "description": "Integrates with ESLint to provide contextual issues in Nova.",
-    "version": "1.0",
+    "version": "0.1.0",
+    "categories": ["issues"],
     "main": "main.js",
     "activationEvents": [
         "onLanguage:javascript",
         "onLanguage:typescript",
         "onLanguage:jsx",
         "onLanguage:tsx",
-        "onWorkspaceContains:.eslintrc.*",
+        "onWorkspaceContains:.eslintrc.*"
     ],
     "entitlements": {
         "process": true
