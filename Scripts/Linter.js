@@ -52,13 +52,12 @@ class Linter {
 
   processDocument(editor) {
     const relativePath = nova.workspace.relativizePath(editor.document.path);
-    const uri = `file://${editor.document.path}`;
     const contentRange = new Range(0, editor.document.length);
     const content = editor.document.getTextInRange(contentRange);
     const process = new LinterProcess(relativePath, content);
 
     process.onComplete((offenses) => {
-      this.issues.set(uri, offenses.map(offense => offense.issue));
+      this.issues.set(editor.document.uri, offenses.map(offense => offense.issue));
     });
 
     process.execute();
