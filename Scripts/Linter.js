@@ -21,7 +21,7 @@ class Linter {
   startWatchingTextEditor(editor) {
     const document = editor.document;
     
-    if (document.syntax != "javascript") {
+    if (document.syntax !== "javascript" && document.syntax !== "typescript") {
       console.info(`[startWatchingTextEditor] Skipping ${document.path} (Syntax: ${document.syntax})`);
       return;
     }
