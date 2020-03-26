@@ -1,7 +1,7 @@
-# ChangeLog
+## 0.2.0
 
-## [0.1.0] - 2020-01-14
+- Simplified the formatting of the CHANGELOG.
 
-### Added
+## 0.1.0
 
 - Initial release.
