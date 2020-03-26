@@ -1,19 +1,22 @@
 {
-    "identifier": "Mecham.ESLint",
-    "name": "ESLint",
-    "vendor": "Mecham",
-    "description": "Integrates with ESLint to provide contextual issues in Nova.",
-    "version": "0.1.0",
-    "categories": ["issues"],
-    "main": "main.js",
-    "activationEvents": [
-        "onLanguage:javascript",
-        "onLanguage:typescript",
-        "onLanguage:jsx",
-        "onLanguage:tsx",
-        "onWorkspaceContains:.eslintrc.*"
-    ],
-    "entitlements": {
-        "process": true
-    }
+  "identifier": "Mecham.ESLint",
+  "name": "ESLint",
+  "vendor": "Mecham",
+  "description": "Lint your JavaScript and TypeScript files with ESLint.",
+  "version": "0.2.0",
+  "categories": ["issues"],
+  "repository": "https://github.com/jsmecham/nova-eslint",
+  "bugs": "https://github.com/jsmecham/nova-eslint/issues",
+  "license": "MIT",
+  "main": "main.js",
+  "activationEvents": [
+    "onLanguage:javascript",
+    "onLanguage:typescript",
+    "onLanguage:jsx",
+    "onLanguage:tsx",
+    "onWorkspaceContains:.eslintrc.*"
+  ],
+  "entitlements": {
+    "process": true
+  }
 }
