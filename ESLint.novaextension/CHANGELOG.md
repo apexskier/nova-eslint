@@ -1,3 +1,7 @@
+## UNRELEASED
+
+- Restructured the project to allow for npm dependencies to be consumed.
+
 ## 0.2.0
 
 - Added documentation to the README.
