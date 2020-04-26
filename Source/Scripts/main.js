@@ -2,96 +2,111 @@ import { Linter } from "./linter";
 import { fixEslint } from "./process";
 
 export function activate() {
-  console.log("activating...");
+    console.log("activating...");
 
-  const linter = new Linter();
+    const linter = new Linter();
 
-  nova.commands.register("apexskier.eslint.fix", (editor) => {
-    if (editor.document.isDirty) {
-      console.log("after saving");
-      editor.onDidSave(fix);
-      editor.save();
-    } else {
-      fix(editor);
-    }
-
-    function fix(editor) {
-      console.log(`Fixing ${editor.document.path}`);
-      fixEslint(editor.document.path, () => {
-        console.log("fixed");
-      });
-    }
-  });
-
-  nova.commands.register("apexskier.eslint.setPathForWorkspace", () => {
-    nova.workspace.showFileChooser(
-      "Choose eslint executable",
-      {
-        allowFiles: true,
-        allowDirectories: false,
-        allowMultiple: false,
-        relative: false,
-      },
-      (paths) => {
-        if (paths && paths.length) {
-          nova.workspace.config.set("apexskier.eslint.eslintPath", paths[0]);
+    nova.commands.register("apexskier.eslint.fix", (editor) => {
+        if (editor.document.isDirty) {
+            console.log("after saving");
+            editor.onDidSave(fix);
+            editor.save();
         } else {
-          nova.workspace.config.set("apexskier.eslint.eslintPath", null);
+            fix(editor);
         }
-      }
-    );
-  });
 
-  nova.workspace.textEditors.forEach(watchEditor);
+        function fix(editor) {
+            console.log(`Fixing ${editor.document.path}`);
+            fixEslint(editor.document.path, () => {
+                console.log("fixed");
+            });
+        }
+    });
 
-  nova.workspace.onDidAddTextEditor(watchEditor);
+    nova.commands.register("apexskier.eslint.setPathForWorkspace", () => {
+        nova.workspace.showFileChooser(
+            "Choose eslint executable",
+            {
+                allowFiles: true,
+                allowDirectories: false,
+                allowMultiple: false,
+                relative: false,
+            },
+            (paths) => {
+                if (paths && paths.length) {
+                    nova.workspace.config.set(
+                        "apexskier.eslint.eslintPath",
+                        paths[0]
+                    );
+                } else {
+                    nova.workspace.config.set(
+                        "apexskier.eslint.eslintPath",
+                        null
+                    );
+                }
+            }
+        );
+    });
 
-  function watchEditor(editor) {
-    const document = editor.document;
+    nova.workspace.textEditors.forEach(watchEditor);
 
-    if (document.isRemote) {
-      // TODO: what to do...
-      // return;
-    }
+    nova.workspace.onDidAddTextEditor(watchEditor);
 
-    if (!["javascript", "typescript", "tsx", "jsx"].includes(document.syntax)) {
-      return;
-    }
+    function watchEditor(editor) {
+        const document = editor.document;
 
-    linter.lintDocument(document);
+        if (document.isRemote) {
+            // TODO: what to do...
+            // return;
+        }
 
-    editor.onWillSave((editor) => {
-      let shouldFix = false;
-      let shouldFixWorkspace = nova.workspace.config.get(
-        "apexskier.eslint.saveOnFix",
-        "boolean"
-      );
-      if (shouldFixWorkspace == null) {
-        shouldFix = nova.config.get("apexskier.eslint.saveOnFix", "boolean");
-      } else {
-        shouldFix = shouldFixWorkspace;
-      }
-      if (shouldFix) {
-        editor.onDidSave((editor) => {
-          console.log(`Fixing ${editor.document.path}`);
-          fixEslint(editor.document.path, () => {
-            console.log("fixed");
-          });
+        if (
+            !["javascript", "typescript", "tsx", "jsx"].includes(
+                document.syntax
+            )
+        ) {
+            return;
+        }
+
+        linter.lintDocument(document);
+
+        editor.onWillSave((editor) => {
+            let shouldFix = false;
+            let shouldFixWorkspace = nova.workspace.config.get(
+                "apexskier.eslint.saveOnFix",
+                "boolean"
+            );
+            if (shouldFixWorkspace == null) {
+                shouldFix = nova.config.get(
+                    "apexskier.eslint.saveOnFix",
+                    "boolean"
+                );
+            } else {
+                shouldFix = shouldFixWorkspace;
+            }
+            if (shouldFix) {
+                editor.onDidSave((editor) => {
+                    console.log(`Fixing ${editor.document.path}`);
+                    fixEslint(editor.document.path, () => {
+                        console.log("fixed");
+                    });
+                });
+            }
+            linter.lintDocument(editor.document);
         });
-      }
-      linter.lintDocument(editor.document);
-    });
-    editor.onDidStopChanging((editor) => linter.lintDocument(editor.document));
-    document.onDidChangeSyntax((document) => linter.lintDocument(document));
+        editor.onDidStopChanging((editor) =>
+            linter.lintDocument(editor.document)
+        );
+        document.onDidChangeSyntax((document) => linter.lintDocument(document));
 
-    editor.onDidDestroy((destroyedEditor) => {
-      let anotherEditor = nova.workspace.textEditors.find((editor) => {
-        return editor.document.uri === destroyedEditor.document.uri;
-      });
+        editor.onDidDestroy((destroyedEditor) => {
+            let anotherEditor = nova.workspace.textEditors.find((editor) => {
+                return editor.document.uri === destroyedEditor.document.uri;
+            });
 
-      if (!anotherEditor) {
-        linter.removeIssues(destroyedEditor.document.uri);
-      }
-    });
-  }
+            if (!anotherEditor) {
+                linter.removeIssues(destroyedEditor.document.uri);
+            }
+        });
+    }
 }

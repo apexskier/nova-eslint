@@ -1,59 +1,59 @@
 {
-  "identifier": "apexskier.eslint",
-  "name": "eslint",
-  "vendor": "Cameron Little",
-  "description": "ESLint nova plugin",
-  "version": "0.0.1",
-  "categories": ["tasks", "issues", "formatters"],
-  "license": "MIT",
-  "homepage": "https://github.com/apexskier/nova-eslint",
-  "repository": "https://github.com/apexskier/nova-eslint",
-  "bugs": "https://github.com/apexskier/nova-eslint/issues",
+    "identifier": "apexskier.eslint",
+    "name": "eslint",
+    "vendor": "Cameron Little",
+    "description": "ESLint nova plugin",
+    "version": "0.0.1",
+    "categories": ["tasks", "issues", "formatters"],
+    "license": "MIT",
+    "homepage": "https://github.com/apexskier/nova-eslint",
+    "repository": "https://github.com/apexskier/nova-eslint",
+    "bugs": "https://github.com/apexskier/nova-eslint/issues",
 
-  "main": "main.dist.js",
+    "main": "main.dist.js",
 
-  "activationEvents": [
-    "onLanguage:javascript",
-    "onLanguage:typescript",
-    "onLanguage:jsx",
-    "onLanguage:tsx",
-    "onWorkspaceContains:.eslintrc.*"
-  ],
-
-  "entitlements": {
-    "filesystem": "readonly",
-    "process": true
-  },
-
-  "config": [
-    {
-      "key": "apexskier.eslint.saveOnFix",
-      "title": "ESLint fix on save",
-      "type": "boolean",
-      "default": false
-    },
-    {
-      "key": "apexskier.eslint.eslintPath",
-      "title": "Path to ESLint executable",
-      "type": "path"
-    }
-  ],
-
-  "commands": {
-    "editor": [
-      {
-        "title": "Fix ESLint issues",
-        "command": "apexskier.eslint.fix",
-        "filters": {
-          "syntaxes": ["javascript", "typescript", "jsx", "tsx"]
-        }
-      }
+    "activationEvents": [
+        "onLanguage:javascript",
+        "onLanguage:typescript",
+        "onLanguage:jsx",
+        "onLanguage:tsx",
+        "onWorkspaceContains:.eslintrc.*"
     ],
-    "extensions": [
-      {
-        "title": "Choose ESLint executable for workspace",
-        "command": "apexskier.eslint.setPathForWorkspace"
-      }
-    ]
-  }
+
+    "entitlements": {
+        "filesystem": "readonly",
+        "process": true
+    },
+
+    "config": [
+        {
+            "key": "apexskier.eslint.saveOnFix",
+            "title": "ESLint fix on save",
+            "type": "boolean",
+            "default": false
+        },
+        {
+            "key": "apexskier.eslint.eslintPath",
+            "title": "Path to ESLint executable",
+            "type": "path"
+        }
+    ],
+
+    "commands": {
+        "editor": [
+            {
+                "title": "Fix ESLint issues",
+                "command": "apexskier.eslint.fix",
+                "filters": {
+                    "syntaxes": ["javascript", "typescript", "jsx", "tsx"]
+                }
+            }
+        ],
+        "extensions": [
+            {
+                "title": "Choose ESLint executable for workspace",
+                "command": "apexskier.eslint.setPathForWorkspace"
+            }
+        ]
+    }
 }
