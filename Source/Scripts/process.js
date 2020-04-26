@@ -1,16 +1,18 @@
 import { eslintOutputToIssue } from "./offense";
 
-export function runEslint(content, uri, callback, foo) {
-  console.log(`starting process`);
-  
+let eslintPath = `${nova.workspace.path}/node_modules/.bin/eslint`;
+nova.workspace.config.onDidChange("apexskier.eslint.eslintPath", (newValue) => {
+  eslintPath = newValue || `${nova.workspace.path}/node_modules/.bin/eslint`;
+});
+
+export function runEslint(content, uri, callback) {
+  let stat = nova.fs.stat(eslintPath)
+  if (!stat.isFile() && !stat.isSymbolicLink()) {
+    return;
+  }
+
   const process = new Process("/usr/bin/env", {
-    args: [
-      `${nova.workspace.path}/node_modules/.bin/eslint`,
-      "--format=json",
-      "--stdin",
-      "--stdin-filename",
-      uri,
-    ],
+    args: [eslintPath, "--format=json", "--stdin", "--stdin-filename", uri],
     cwd: nova.workspace.path,
     stdio: "pipe",
   });
@@ -20,24 +22,44 @@ export function runEslint(content, uri, callback, foo) {
 
   process.start();
 
-  console.log(`started process ${process.pid}`);
-
   const writer = process.stdin.getWriter();
   writer.ready.then(() => {
     writer.write(content);
     writer.close();
   });
 
-  function handleError(error) {
-    console.error(error);
-  }
+  return process;
 
   function handleOutput(output) {
     const parsedOutput = JSON.parse(output);
     const offenses = parsedOutput[0]["messages"];
 
-    console.log(output);
-
     callback(offenses.map(eslintOutputToIssue));
   }
+}
+
+export function fixEslint(path, callback) {
+  let stat = nova.fs.stat(eslintPath)
+  if (!stat.isFile() && !stat.isSymbolicLink()) {
+    return;
+  }
+
+  const process = new Process("/usr/bin/env", {
+    args: [eslintPath, "--fix", "--format=json", path],
+    cwd: nova.workspace.path,
+    stdio: "pipe",
+  });
+
+  process.onStderr(handleError);
+  process.onDidExit(() => {
+    callback();
+  });
+
+  process.start();
+  
+  return process;
+}
+
+function handleError(error) {
+  console.error(error);
 }

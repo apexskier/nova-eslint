@@ -3,17 +3,22 @@ import { runEslint } from "./process";
 export class Linter {
   constructor() {
     this.issues = new IssueCollection();
+    this._active = {};
   }
 
-  async lintDocument(document) {
+  lintDocument(document) {
     const contentRange = new Range(0, document.length);
     const content = document.getTextInRange(contentRange);
 
-    return this.lintString(content, document.uri);
+    this.lintString(content, document.uri);
   }
 
-  async lintString(string, uri) {
-    runEslint(string, uri, (issues) => {
+  lintString(string, uri) {
+    if (this._active[uri]) {
+      this._active[uri].kill();
+    }
+    this._active[uri] = runEslint(string, uri, (issues) => {
+      delete this._active[uri];
       this.issues.set(uri, issues);
     });
   }
