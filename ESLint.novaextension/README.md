@@ -8,4 +8,5 @@ files.
 * Automatically invokes ESLint and reports on issues found within your
   JavaScript and TypeScript source files
 * Auto-fix command
+* Auto-fix on save
 * Use project eslint executable by default

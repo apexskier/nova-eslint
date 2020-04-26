@@ -1,6 +1,14 @@
 ## UNRELEASED
 
-- Restructured the project to allow for npm dependencies to be consumed.
+- Auto-fix command
+- Auto-fix on save
+- Better performance by killing still-running linting processes
+- Use workspace-installed eslint by default
+- Support for configuring eslint executable location
+
+## 0.3.0
+
+- Run eslint even when global not installed
 
 ## 0.2.0
 
