@@ -49,9 +49,11 @@ export function activate() {
   function watchEditor(editor) {
     const document = editor.document;
 
-    if (document.isRemote) {console.log("test");}
-      // TODO: what to do...
-      // return;
+    if (document.isRemote) {
+      console.log("test");
+    }
+    // TODO: what to do...
+    // return;
 
     if (!["javascript", "typescript", "tsx", "jsx"].includes(document.syntax)) {
       return;
@@ -61,21 +63,24 @@ export function activate() {
 
     editor.onWillSave((editor) => {
       let shouldFix = false;
-      let shouldFixWorkspace = nova.workspace.config.get("apexskier.eslint.saveOnFix", "boolean");
-      if (shouldFixWorkspace== null ) {
+      let shouldFixWorkspace = nova.workspace.config.get(
+        "apexskier.eslint.saveOnFix",
+        "boolean"
+      );
+      if (shouldFixWorkspace == null) {
         shouldFix = nova.config.get("apexskier.eslint.saveOnFix", "boolean");
       } else {
-        shouldFix = shouldFixWorkspace
+        shouldFix = shouldFixWorkspace;
       }
       if (shouldFix) {
-        editor.onDidSave(editor => {
+        editor.onDidSave((editor) => {
           console.log(`Fixing ${editor.document.path}`);
           fixEslint(editor.document.path, () => {
             console.log("fixed");
           });
         });
       }
-      linter.lintDocument(editor.document)
+      linter.lintDocument(editor.document);
     });
     editor.onDidStopChanging((editor) => linter.lintDocument(editor.document));
     document.onDidChangeSyntax((document) => linter.lintDocument(document));

@@ -1,4 +1,4 @@
-import { eslintOutputToIssue } from "./offense";
+import { eslintOutputToIssue } from "./eslintOutputToIssue";
 
 let eslintPath = `${nova.workspace.path}/node_modules/.bin/eslint`;
 nova.workspace.config.onDidChange("apexskier.eslint.eslintPath", (newValue) => {
@@ -6,7 +6,7 @@ nova.workspace.config.onDidChange("apexskier.eslint.eslintPath", (newValue) => {
 });
 
 export function runEslint(content, uri, callback) {
-  let stat = nova.fs.stat(eslintPath)
+  let stat = nova.fs.stat(eslintPath);
   if (!stat.isFile() && !stat.isSymbolicLink()) {
     return;
   }
@@ -39,7 +39,7 @@ export function runEslint(content, uri, callback) {
 }
 
 export function fixEslint(path, callback) {
-  let stat = nova.fs.stat(eslintPath)
+  let stat = nova.fs.stat(eslintPath);
   if (!stat.isFile() && !stat.isSymbolicLink()) {
     return;
   }
@@ -56,7 +56,7 @@ export function fixEslint(path, callback) {
   });
 
   process.start();
-  
+
   return process;
 }
 
