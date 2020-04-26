@@ -6,7 +6,7 @@ export function activate() {
 
     const linter = new Linter();
 
-    nova.commands.register("apexskier.eslint.fix", (editor) => {
+    nova.commands.register("Mecham.ESLint.fix", (editor) => {
         if (editor.document.isDirty) {
             console.log("after saving");
             editor.onDidSave(fix);
@@ -23,7 +23,7 @@ export function activate() {
         }
     });
 
-    nova.commands.register("apexskier.eslint.setPathForWorkspace", () => {
+    nova.commands.register("Mecham.ESLint.setPathForWorkspace", () => {
         nova.workspace.showFileChooser(
             "Choose eslint executable",
             {
@@ -35,14 +35,11 @@ export function activate() {
             (paths) => {
                 if (paths && paths.length) {
                     nova.workspace.config.set(
-                        "apexskier.eslint.eslintPath",
+                        "Mecham.ESLint.eslintPath",
                         paths[0]
                     );
                 } else {
-                    nova.workspace.config.set(
-                        "apexskier.eslint.eslintPath",
-                        null
-                    );
+                    nova.workspace.config.set("Mecham.ESLint.eslintPath", null);
                 }
             }
         );
@@ -73,12 +70,12 @@ export function activate() {
         editor.onWillSave((editor) => {
             let shouldFix = false;
             let shouldFixWorkspace = nova.workspace.config.get(
-                "apexskier.eslint.saveOnFix",
+                "Mecham.ESLint.saveOnFix",
                 "boolean"
             );
             if (shouldFixWorkspace == null) {
                 shouldFix = nova.config.get(
-                    "apexskier.eslint.saveOnFix",
+                    "Mecham.ESLint.saveOnFix",
                     "boolean"
                 );
             } else {

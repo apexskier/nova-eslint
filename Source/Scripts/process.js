@@ -1,7 +1,7 @@
 import { eslintOutputToIssue } from "./eslintOutputToIssue";
 
 let eslintPath = `${nova.workspace.path}/node_modules/.bin/eslint`;
-nova.workspace.config.onDidChange("apexskier.eslint.eslintPath", (newValue) => {
+nova.workspace.config.onDidChange("Mecham.ESLint.eslintPath", (newValue) => {
     eslintPath = newValue || `${nova.workspace.path}/node_modules/.bin/eslint`;
 });
 
