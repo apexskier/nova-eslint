@@ -1,14 +1,14 @@
 {
-    "identifier": "apexskier.eslint",
+    "identifier": "Mecham.ESLint",
     "name": "eslint",
     "vendor": "Cameron Little",
     "description": "ESLint nova plugin",
-    "version": "0.0.1",
+    "version": "0.3.0",
     "categories": ["tasks", "issues", "formatters"],
+    "homepage": "https://github.com/jsmecham/nova-eslint#readme",
+    "repository": "https://github.com/jsmecham/nova-eslint",
+    "bugs": "https://github.com/jsmecham/nova-eslint/issues",
     "license": "MIT",
-    "homepage": "https://github.com/apexskier/nova-eslint",
-    "repository": "https://github.com/apexskier/nova-eslint",
-    "bugs": "https://github.com/apexskier/nova-eslint/issues",
 
     "main": "main.dist.js",
 
@@ -27,13 +27,13 @@
 
     "config": [
         {
-            "key": "apexskier.eslint.saveOnFix",
+            "key": "Mecham.ESLint.saveOnFix",
             "title": "ESLint fix on save",
             "type": "boolean",
             "default": false
         },
         {
-            "key": "apexskier.eslint.eslintPath",
+            "key": "Mecham.ESLint.eslintPath",
             "title": "Path to ESLint executable",
             "type": "path"
         }
@@ -43,7 +43,7 @@
         "editor": [
             {
                 "title": "Fix ESLint issues",
-                "command": "apexskier.eslint.fix",
+                "command": "Mecham.ESLint.fix",
                 "filters": {
                     "syntaxes": ["javascript", "typescript", "jsx", "tsx"]
                 }
@@ -52,7 +52,7 @@
         "extensions": [
             {
                 "title": "Choose ESLint executable for workspace",
-                "command": "apexskier.eslint.setPathForWorkspace"
+                "command": "Mecham.ESLint.setPathForWorkspace"
             }
         ]
     }

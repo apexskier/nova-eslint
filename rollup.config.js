@@ -5,7 +5,7 @@ export default {
     input: "Source/Scripts/main.js",
     plugins: [commonjs(), resolve()],
     output: {
-        file: "eslint.novaextension/Scripts/main.dist.js",
+        file: "ESLint.novaextension/Scripts/main.dist.js",
         sourcemap: true,
         format: "cjs",
     },
