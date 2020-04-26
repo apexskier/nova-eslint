@@ -1,33 +1,88 @@
-//const { createRequire } = require('module');
-
 export function activate() {
-	console.log('activating...');
-	console.log(nova.workspace.path);
+  console.log("activating...");
+  console.log(nova.workspace.path);
 
-	nova.commands.register('apexskier.webpack.run', editor => {
-		const process = new Process('/usr/bin/env', {
-			args: ['node', '--inspect-brk', `${nova.extension.path}/Scripts/process.dist.js`],
-			env: {
-				NODE_PATH: `${nova.workspace.path}/node_modules`,
-				WEBPACK_CONFIG: `${nova.workspace.path}/webpack.dev.js`,
-			},
-			cwd: nova.workspace.path,
-			stdio: 'jsonrpc',
-		});
+  nova.commands.register("apexskier.webpack.run", (editor) => {
+    nova.workspace.showFileChooser(
+      "Choose your webpack configuration file.",
+      {
+        allowFiles: true,
+        allowDirectories: false,
+        allowMultiple: false,
+        relative: false,
+      },
+      (files) => {
+        if (!files || !files.length) {
+          return;
+        }
 
-		process.start();
+        // TODO: limit 1 process per workspace.
+        // I'd like this to be a task
+        const args = nova.config.get("apexskier.webpack.debug", "Boolean")
+          ? [
+              "node",
+              "--inspect",
+              `${nova.extension.path}/Scripts/process.dist.js`,
+            ]
+          : ["node", `${nova.extension.path}/Scripts/process.dist.js`];
+        const process = new Process("/usr/bin/env", {
+          args,
+          env: {
+            NODE_PATH: `${nova.workspace.path}/node_modules`,
+            WEBPACK_CONFIG: files[0],
+          },
+          cwd: nova.workspace.path,
+          stdio: "pipe",
+        });
 
-		process.onNotify('ack', message => {
-			console.log('The server successfully connected.', message);
-			clearInterval(synterval);
-		});
+        const issues = new IssueCollection();
 
-		console.log('starting sub-process', process.pid);
+        process.onStdout((message) => {
+          try {
+            let obj;
+            try {
+              obj = JSON.parse(message);
+            } catch (err) {
+              return;
+            }
+            console.log(message);
+            switch (obj.type) {
+              case "issues":
+                console.log(obj.issues.length);
+                issues.clear();
+                for (const issue of obj.issues) {
+                  const novaIssue = new Issue(); // rollup doesn't scope this right
+                  // novaIssue.source = ;
+                  novaIssue.message = issue.message;
+                  novaIssue.severity = (() => {
+                    switch (issue.type) {
+                      case "warning":
+                        return IssueSeverity.Warning;
+                      case "error":
+                      default:
+                        return IssueSeverity.Error;
+                    }
+                  })();
+                  novaIssue.line = 1;
+                  novaIssue.column = 1;
+                  novaIssue.endLine = 1;
+                  novaIssue.endColumn = 3;
+                  console.log(issue.file);
+                  issues.set(issue.file, [novaIssue]);
+                }
+                break;
+            }
+          } catch (err) {
+            console.error(err);
+          }
+        });
+        process.onStderr((message) => {
+          console.error(message);
+        });
 
-		const synterval = setInterval(() => {
-			console.log('attempting to connect to sub-process');
-			debugger;
-			process.notify('syn', { hello: 'world' });
-		}, 400);
-	});
+        process.start();
+        console.log("started sub-process", process.pid);
+      }
+    );
+  });
 }
