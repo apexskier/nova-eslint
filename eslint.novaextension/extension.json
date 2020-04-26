@@ -24,20 +24,20 @@
     "filesystem": "readonly",
     "process": true
   },
-  
-      "config": [
-        {
-            "key": "apexskier.eslint.saveOnFix",
-            "title": "ESLint fix on save",
-            "type": "boolean",
-            "default": false
-        },
-        {
-            "key": "apexskier.eslint.eslintPath",
-            "title": "Path to ESLint executable",
-            "type": "path"
-        }
-    ],
+
+  "config": [
+    {
+      "key": "apexskier.eslint.saveOnFix",
+      "title": "ESLint fix on save",
+      "type": "boolean",
+      "default": false
+    },
+    {
+      "key": "apexskier.eslint.eslintPath",
+      "title": "Path to ESLint executable",
+      "type": "path"
+    }
+  ],
 
   "commands": {
     "editor": [

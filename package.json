@@ -1,7 +1,7 @@
 {
   "name": "nova-eslint",
   "version": "0.0.1",
-  "description": "Nova eslint integration.",
+  "description": "Lint your JavaScript and TypeScript files with ESLint.",
   "scripts": {
     "build:main": "rollup -c rollup.config.main.js",
     "build": "concurrently 'yarn:build:*'",

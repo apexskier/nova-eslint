@@ -50,10 +50,9 @@ export function activate() {
     const document = editor.document;
 
     if (document.isRemote) {
-      console.log("test");
+      // TODO: what to do...
+      // return;
     }
-    // TODO: what to do...
-    // return;
 
     if (!["javascript", "typescript", "tsx", "jsx"].includes(document.syntax)) {
       return;
