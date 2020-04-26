@@ -1,10 +1,9 @@
 {
-  "name": "nova-webpack",
+  "name": "nova-eslint",
   "version": "0.0.1",
-  "description": "Nova webpack integration.",
+  "description": "Nova eslint integration.",
   "scripts": {
     "build:main": "rollup -c rollup.config.main.js",
-    "build:process": "rollup -c rollup.config.process.js",
     "build": "concurrently 'yarn:build:*'",
     "lint:eslint": "eslint \"Source/**/*.js\"",
     "lint:prettier": "prettier --ignore-path .gitignore --check \"**/*.{ts,js,json}\"",
@@ -13,12 +12,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/apexskier/nova-webpack.git"
+    "url": "git+https://github.com/apexskier/nova-eslint.git"
   },
   "author": "Cameron Little",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/apexskier/nova-webpack/issues"
+    "url": "https://github.com/apexskier/nova-eslint/issues"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^11.1.0",
@@ -30,8 +29,5 @@
     "rollup": "^2.7.2"
   },
   "private": true,
-  "dependencies": {
-    "jayson": "^3.3.0",
-    "stacktrace-js": "^2.0.2"
-  }
+  "dependencies": {}
 }

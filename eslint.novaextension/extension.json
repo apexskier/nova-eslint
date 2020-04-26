@@ -1,0 +1,27 @@
+{
+  "identifier": "apexskier.eslint",
+  "name": "eslint",
+  "vendor": "Cameron Little",
+  "description": "eslint nova integration",
+  "version": "0.0.1",
+  "categories": ["tasks", "issues"],
+  "license": "MIT",
+  "homepage": "https://github.com/apexskier/nova-eslint",
+  "repository": "https://github.com/apexskier/nova-eslint",
+  "bugs": "https://github.com/apexskier/nova-eslint/issues",
+
+  "main": "main.dist.js",
+
+  "activationEvents": [
+    "onLanguage:javascript",
+    "onLanguage:typescript",
+    "onLanguage:jsx",
+    "onLanguage:tsx",
+    "onWorkspaceContains:.eslintrc.*"
+  ],
+
+  "entitlements": {
+    "filesystem": "readonly",
+    "process": true
+  }
+}
