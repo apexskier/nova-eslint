@@ -1,0 +1,57 @@
+{
+    "identifier": "apexskier.webpack",
+    "name": "webpack",
+    "vendor": "Cameron Little",
+    "description": "Webpack server with inline feedback.",
+    "version": "0.0.1",
+    "categories": ["tasks", "issues"],
+    "license": "MIT",
+    "homepage": "https://github.com/apexskier/nova-webpack",
+    "repository": "https://github.com/apexskier/nova-webpack",
+    "bugs": "https://github.com/apexskier/nova-webpack/issues",
+    
+    "main": "main.dist.js",
+    
+    "activationEvents": [
+        "*"
+    ],
+    
+    "entitlements": {
+        "process": true
+    },
+    
+    "commands": {
+        "command-palette": [
+            {
+                "title": "Run webpack",
+                "command": "apexskier.webpack.run"
+            }
+        ]
+    },
+
+    "runConfigurationTemplates": {
+        "runWebpack": {
+            "name": "Webpack server",
+            "description": "Run a webpack dev server with inline feedback.",
+            "actions": ["run"],
+            "task": {
+                "command": "apexskier.webpack.run",
+                "env": {
+                    "WORKSPACE_FOLDER": "$WorkspaceFolder",
+                    "EXTENSION_FOLDER": "$ExtensionFolder",
+                    "WEBPACK_CONFIG": "$(Config:apexskier.webpack.configPath)"
+                },
+                "persistent": true,
+                "autosaveEditors": false
+            },
+            "config": [
+                {
+                    "key": "apexskier.webpack.configPath",
+                    "title": "Webpack config",
+                    "description": "Path to your webpack config file.",
+                    "type": "path"
+                }
+            ]
+        }
+    }
+}
