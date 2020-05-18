@@ -14,16 +14,18 @@ export class Linter {
     }
 
     lintString(string, uri) {
-        if (this._active[uri]) {
-            this._active[uri].kill();
+        const path = nova.path.normalize(uri);
+        if (this._active[path]) {
+            this._active[path].kill();
         }
-        this._active[uri] = runEslint(string, uri, (issues) => {
-            delete this._active[uri];
-            this.issues.set(uri, issues);
+        this._active[path] = runEslint(string, path, (issues) => {
+            delete this._active[path];
+            this.issues.set(path, issues);
         });
     }
 
     removeIssues(uri) {
-        this.issues.remove(uri);
+        const path = nova.path.normalize(uri);
+        this.issues.remove(path);
     }
 }
