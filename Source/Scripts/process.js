@@ -4,22 +4,22 @@ function getEslintPath() {
     let workspaceConf = nova.workspace.config.get(
         "Mecham.ESLint.eslintPath",
         "string"
-    )
+    );
     if (workspaceConf) {
         return workspaceConf;
     }
-    
+
     const globalConf = nova.config.get("Mecham.ESLint.eslintPath", "string");
-    if (globalConf){
+    if (globalConf) {
         return globalConf;
     }
-    
+
     return `${nova.workspace.path}/node_modules/.bin/eslint`;
 }
 
 function exlintExecutableIsGood() {
     const stat = nova.fs.stat(eslintPath);
-    return stat && (stat.isFile() || stat.isSymbolicLink())
+    return stat && (stat.isFile() || stat.isSymbolicLink());
 }
 
 let eslintPath = getEslintPath();
