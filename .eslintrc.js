@@ -13,4 +13,5 @@ module.exports = {
     rules: {
         curly: 2,
     },
+    ignorePatterns: "*.dist.*",
 };
