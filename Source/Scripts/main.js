@@ -23,28 +23,6 @@ export function activate() {
         }
     });
 
-    nova.commands.register("Mecham.ESLint.setPathForWorkspace", () => {
-        nova.workspace.showFileChooser(
-            "Choose eslint executable",
-            {
-                allowFiles: true,
-                allowDirectories: false,
-                allowMultiple: false,
-                relative: false,
-            },
-            (paths) => {
-                if (paths && paths.length) {
-                    nova.workspace.config.set(
-                        "Mecham.ESLint.eslintPath",
-                        paths[0]
-                    );
-                } else {
-                    nova.workspace.config.set("Mecham.ESLint.eslintPath", null);
-                }
-            }
-        );
-    });
-
     nova.workspace.textEditors.forEach(watchEditor);
 
     nova.workspace.onDidAddTextEditor(watchEditor);

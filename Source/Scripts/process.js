@@ -1,13 +1,39 @@
 import { eslintOutputToIssue } from "./eslintOutputToIssue";
 
-let eslintPath = `${nova.workspace.path}/node_modules/.bin/eslint`;
-nova.workspace.config.onDidChange("Mecham.ESLint.eslintPath", (newValue) => {
-    eslintPath = newValue || `${nova.workspace.path}/node_modules/.bin/eslint`;
+function getEslintPath() {
+    let workspaceConf = nova.workspace.config.get(
+        "Mecham.ESLint.eslintPath",
+        "string"
+    )
+    if (workspaceConf) {
+        return workspaceConf;
+    }
+    
+    const globalConf = nova.config.get("Mecham.ESLint.eslintPath", "string");
+    if (globalConf){
+        return globalConf;
+    }
+    
+    return `${nova.workspace.path}/node_modules/.bin/eslint`;
+}
+
+function exlintExecutableIsGood() {
+    const stat = nova.fs.stat(eslintPath);
+    return stat && (stat.isFile() || stat.isSymbolicLink())
+}
+
+let eslintPath = getEslintPath();
+nova.config.onDidChange("Mecham.ESLint.eslintPath", () => {
+    eslintPath = getEslintPath();
+    console.log("Updating ESLint executable globally", eslintPath);
+});
+nova.workspace.config.onDidChange("Mecham.ESLint.eslintPath", () => {
+    eslintPath = getEslintPath();
+    console.log("Updating ESLint executable for workspace", eslintPath);
 });
 
 export function runEslint(content, uri, callback) {
-    let stat = nova.fs.stat(eslintPath);
-    if (!stat.isFile() && !stat.isSymbolicLink()) {
+    if (!exlintExecutableIsGood()) {
         return;
     }
 
@@ -39,8 +65,7 @@ export function runEslint(content, uri, callback) {
 }
 
 export function fixEslint(path, callback) {
-    let stat = nova.fs.stat(eslintPath);
-    if (!stat.isFile() && !stat.isSymbolicLink()) {
+    if (!exlintExecutableIsGood()) {
         return;
     }
 

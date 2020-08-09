@@ -48,12 +48,6 @@
                     "syntaxes": ["javascript", "typescript", "jsx", "tsx"]
                 }
             }
-        ],
-        "extensions": [
-            {
-                "title": "Choose ESLint executable for workspace",
-                "command": "Mecham.ESLint.setPathForWorkspace"
-            }
         ]
     }
 }
