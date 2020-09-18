@@ -8,6 +8,6 @@ If it's not there (e.g., it's installed globally or in a sub-directory), you can
 
 ```json
 {
-  "Mecham.ESLint.eslintPath" : "\/Volumes\/Macintosh HD\/Users\/cameronlittle\/Dev\/nova-eslint\/ESLint.novaextension\/extension.png"
+    "apexskier.eslint.config.eslintPath": "/Volumes/Macintosh HD/Users/cameronlittle/npm/eslint/bin/eslint.js"
 }
 ```

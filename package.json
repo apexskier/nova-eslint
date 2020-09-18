@@ -1,22 +1,25 @@
 {
     "name": "nova-eslint",
     "version": "0.3.0",
-    "description": "Lint your JavaScript and TypeScript files with ESLint.",
+    "description": "Lint your code files with ESLint in Nova.",
     "scripts": {
         "build": "rollup -c rollup.config.js",
+        "lint": "concurrently 'yarn:lint:*'",
         "lint:eslint": "eslint \"Source/**/*.js\"",
         "lint:prettier": "prettier --ignore-path .gitignore --check \"**/*.{ts,js,json}\"",
-        "lint": "concurrently 'yarn:lint:*'",
+        "fix": "concurrently 'yarn:fix:*'",
+        "fix:eslint": "eslint --fix --ignore-path .gitignore \"**/*.{ts,js}\"",
+        "fix:prettier": "prettier --ignore-path .gitignore --write \"**/*.{ts,js,json,md}\"",
         "watch": "onchange -i \"Source/**/*.js\" \"rollup.*.js\" -- yarn run build"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/jsmecham/nova-eslint.git"
+        "url": "git+https://github.com/apexskier/nova-eslint.git"
     },
-    "author": "Justin Mecham",
+    "author": "Cameron Little",
     "license": "MIT",
     "bugs": {
-        "url": "https://github.com/jsmecham/nova-eslint/issues"
+        "url": "https://github.com/apexskier/nova-eslint/issues"
     },
     "devDependencies": {
         "@rollup/plugin-commonjs": "^11.1.0",

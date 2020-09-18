@@ -1,13 +1,13 @@
 {
-    "identifier": "Mecham.ESLint",
+    "identifier": "apexskier.eslint",
     "name": "ESLint",
-    "vendor": "Mecham",
-    "description": "Lint your JavaScript and TypeScript files with ESLint.",
-    "version": "0.3.0",
+    "organization": "Cameron Little",
+    "description": "Lint your code with ESLint.",
+    "version": "1.0.0",
     "categories": ["issues", "formatters"],
-    "homepage": "https://github.com/jsmecham/nova-eslint#readme",
-    "repository": "https://github.com/jsmecham/nova-eslint",
-    "bugs": "https://github.com/jsmecham/nova-eslint/issues",
+    "homepage": "https://github.com/apexskier/nova-eslint#readme",
+    "repository": "https://github.com/apexskier/nova-eslint",
+    "bugs": "https://github.com/apexskier/nova-eslint/issues",
     "license": "MIT",
 
     "main": "main.dist.js",
@@ -27,13 +27,13 @@
 
     "config": [
         {
-            "key": "Mecham.ESLint.saveOnFix",
+            "key": "apexskier.eslint.config.fixOnSave",
             "title": "ESLint fix on save",
             "type": "boolean",
             "default": false
         },
         {
-            "key": "Mecham.ESLint.eslintPath",
+            "key": "apexskier.eslint.config.eslintPath",
             "title": "Path to ESLint executable",
             "type": "path"
         }
@@ -43,7 +43,7 @@
         "editor": [
             {
                 "title": "Fix ESLint issues",
-                "command": "Mecham.ESLint.fix",
+                "command": "apexskier.eslint.command.fix",
                 "filters": {
                     "syntaxes": ["javascript", "typescript", "jsx", "tsx"]
                 }

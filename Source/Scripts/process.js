@@ -2,14 +2,17 @@ import { eslintOutputToIssue } from "./eslintOutputToIssue";
 
 function getEslintPath() {
     let workspaceConf = nova.workspace.config.get(
-        "Mecham.ESLint.eslintPath",
+        "apexskier.eslint.config.eslintPath",
         "string"
     );
     if (workspaceConf) {
         return workspaceConf;
     }
 
-    const globalConf = nova.config.get("Mecham.ESLint.eslintPath", "string");
+    const globalConf = nova.config.get(
+        "apexskier.eslint.config.eslintPath",
+        "string"
+    );
     if (globalConf) {
         return globalConf;
     }
@@ -23,11 +26,11 @@ function exlintExecutableIsGood() {
 }
 
 let eslintPath = getEslintPath();
-nova.config.onDidChange("Mecham.ESLint.eslintPath", () => {
+nova.config.onDidChange("apexskier.eslint.config.eslintPath", () => {
     eslintPath = getEslintPath();
     console.log("Updating ESLint executable globally", eslintPath);
 });
-nova.workspace.config.onDidChange("Mecham.ESLint.eslintPath", () => {
+nova.workspace.config.onDidChange("apexskier.eslint.config.eslintPath", () => {
     eslintPath = getEslintPath();
     console.log("Updating ESLint executable for workspace", eslintPath);
 });

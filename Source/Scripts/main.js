@@ -6,7 +6,7 @@ export function activate() {
 
     const linter = new Linter();
 
-    nova.commands.register("Mecham.ESLint.fix", (editor) => {
+    nova.commands.register("apexskier.eslint.command.fix", (editor) => {
         if (editor.document.isDirty) {
             console.log("after saving");
             editor.onDidSave(fix);
@@ -48,12 +48,12 @@ export function activate() {
         editor.onWillSave((editor) => {
             let shouldFix = false;
             let shouldFixWorkspace = nova.workspace.config.get(
-                "Mecham.ESLint.saveOnFix",
+                "apexskier.eslint.config.fixOnSave",
                 "boolean"
             );
             if (shouldFixWorkspace == null) {
                 shouldFix = nova.config.get(
-                    "Mecham.ESLint.saveOnFix",
+                    "apexskier.eslint.config.fixOnSave",
                     "boolean"
                 );
             } else {
