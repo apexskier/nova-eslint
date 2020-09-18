@@ -115,7 +115,7 @@ export function activate() {
         );
 
         compositeDisposable.add(editorDisposable);
-        
+
         compositeDisposable.add(
             document.onDidChangeSyntax((document) =>
                 linter.lintDocument(document)
