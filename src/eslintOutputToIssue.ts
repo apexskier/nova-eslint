@@ -1,8 +1,12 @@
-export function eslintOutputToIssue(attributes) {
+import type { Linter } from "eslint";
+
+export function eslintOutputToIssue(attributes: Linter.LintMessage) {
     const issue = new Issue();
 
     issue.source = "ESLint";
-    issue.code = attributes.ruleId;
+    if (attributes.ruleId) {
+        issue.code = attributes.ruleId;
+    }
     issue.message = attributes.message;
 
     switch (attributes.severity) {

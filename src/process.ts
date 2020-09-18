@@ -1,7 +1,8 @@
+import type { Linter } from "eslint";
 import { eslintOutputToIssue } from "./eslintOutputToIssue";
 
 function getEslintPath() {
-    let workspaceConf = nova.workspace.config.get(
+    const workspaceConf = nova.workspace.config.get(
         "apexskier.eslint.config.eslintPath",
         "string"
     );
@@ -35,8 +36,17 @@ nova.workspace.config.onDidChange("apexskier.eslint.config.eslintPath", () => {
     console.log("Updating ESLint executable for workspace", eslintPath);
 });
 
-export function runEslint(content, uri, callback) {
+export function runEslint(
+    content: string,
+    uri: string,
+    // eslint-disable-next-line no-unused-vars
+    callback: (issues: Array<Issue>) => void
+) {
     if (!exlintExecutableIsGood()) {
+        return;
+    }
+
+    if (!nova.workspace.path) {
         return;
     }
 
@@ -51,7 +61,8 @@ export function runEslint(content, uri, callback) {
 
     process.start();
 
-    const writer = process.stdin.getWriter();
+    // TODO: Improve readable stream types
+    const writer = (process.stdin as any).getWriter();
     writer.ready.then(() => {
         writer.write(content);
         writer.close();
@@ -59,16 +70,22 @@ export function runEslint(content, uri, callback) {
 
     return process;
 
-    function handleOutput(output) {
+    function handleOutput(output: string) {
         const parsedOutput = JSON.parse(output);
-        const offenses = parsedOutput[0]["messages"];
+        const offenses = parsedOutput[0]["messages"] as Array<
+            Linter.LintMessage
+        >;
 
         callback(offenses.map(eslintOutputToIssue));
     }
 }
 
-export function fixEslint(path, callback) {
+export function fixEslint(path: string, callback: () => void) {
     if (!exlintExecutableIsGood()) {
+        return;
+    }
+
+    if (!nova.workspace.path) {
         return;
     }
 
@@ -88,6 +105,6 @@ export function fixEslint(path, callback) {
     return process;
 }
 
-function handleError(error) {
+function handleError(error: unknown) {
     console.error(error);
 }

@@ -6,28 +6,37 @@ export function activate() {
 
     const linter = new Linter();
 
-    nova.commands.register("apexskier.eslint.command.fix", (editor) => {
-        if (editor.document.isDirty) {
-            console.log("after saving");
-            editor.onDidSave(fix);
-            editor.save();
-        } else {
-            fix(editor);
-        }
+    nova.commands.register(
+        "apexskier.eslint.command.fix",
+        (editor: TextEditor) => {
+            if (editor.document.isDirty) {
+                console.log("after saving");
+                editor.onDidSave(fix);
+                editor.save();
+            } else {
+                fix(editor);
+            }
 
-        function fix(editor) {
-            console.log(`Fixing ${editor.document.path}`);
-            fixEslint(editor.document.path, () => {
-                console.log("fixed");
-            });
+            function fix(editor: TextEditor) {
+                if (!editor.document.path) {
+                    nova.workspace.showErrorMessage(
+                        "This document is missing a path."
+                    );
+                    return;
+                }
+                console.log(`Fixing ${editor.document.path}`);
+                fixEslint(editor.document.path, () => {
+                    console.log("fixed");
+                });
+            }
         }
-    });
+    );
 
     nova.workspace.textEditors.forEach(watchEditor);
 
     nova.workspace.onDidAddTextEditor(watchEditor);
 
-    function watchEditor(editor) {
+    function watchEditor(editor: TextEditor) {
         const document = editor.document;
 
         if (document.isRemote) {
@@ -37,7 +46,7 @@ export function activate() {
 
         if (
             !["javascript", "typescript", "tsx", "jsx"].includes(
-                document.syntax
+                document.syntax ?? ""
             )
         ) {
             return;
@@ -46,21 +55,24 @@ export function activate() {
         linter.lintDocument(document);
 
         editor.onWillSave((editor) => {
-            let shouldFix = false;
-            let shouldFixWorkspace = nova.workspace.config.get(
-                "apexskier.eslint.config.fixOnSave",
-                "boolean"
-            );
-            if (shouldFixWorkspace == null) {
-                shouldFix = nova.config.get(
+            const shouldFix =
+                nova.workspace.config.get(
                     "apexskier.eslint.config.fixOnSave",
                     "boolean"
-                );
-            } else {
-                shouldFix = shouldFixWorkspace;
-            }
+                ) ??
+                nova.config.get(
+                    "apexskier.eslint.config.fixOnSave",
+                    "boolean"
+                ) ??
+                false;
             if (shouldFix) {
                 editor.onDidSave((editor) => {
+                    if (!editor.document.path) {
+                        nova.workspace.showErrorMessage(
+                            "This document is missing a path."
+                        );
+                        return;
+                    }
                     console.log(`Fixing ${editor.document.path}`);
                     fixEslint(editor.document.path, () => {
                         console.log("fixed");
@@ -75,7 +87,7 @@ export function activate() {
         document.onDidChangeSyntax((document) => linter.lintDocument(document));
 
         editor.onDidDestroy((destroyedEditor) => {
-            let anotherEditor = nova.workspace.textEditors.find((editor) => {
+            const anotherEditor = nova.workspace.textEditors.find((editor) => {
                 return editor.document.uri === destroyedEditor.document.uri;
             });
 

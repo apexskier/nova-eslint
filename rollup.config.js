@@ -1,9 +1,9 @@
-const commonjs = require("@rollup/plugin-commonjs");
-const resolve = require("@rollup/plugin-node-resolve");
+import typescript from "rollup-plugin-typescript2";
+import resolve from "@rollup/plugin-node-resolve";
 
 export default {
-    input: "Source/Scripts/main.js",
-    plugins: [commonjs(), resolve()],
+    input: "src/main.ts",
+    plugins: [typescript(), resolve()],
     output: {
         file: "ESLint.novaextension/Scripts/main.dist.js",
         sourcemap: true,
