@@ -101,11 +101,6 @@ export function activate() {
             )
         );
         editorDisposable.add(
-            document.onDidChangeSyntax((document) =>
-                linter.lintDocument(document)
-            )
-        );
-        editorDisposable.add(
             editor.onDidDestroy((destroyedEditor) => {
                 const anotherEditor = nova.workspace.textEditors.find(
                     (editor) =>
@@ -120,6 +115,12 @@ export function activate() {
         );
 
         compositeDisposable.add(editorDisposable);
+        
+        compositeDisposable.add(
+            document.onDidChangeSyntax((document) =>
+                linter.lintDocument(document)
+            )
+        );
     }
 
     console.log("activated");
