@@ -1,4 +1,4 @@
 {
-    "editor.default_syntax": "javascript",
+    "editor.default_syntax": "typescript",
     "workspace.name": "ESLint Extension"
 }

@@ -1,0 +1,1 @@
+ESLint.novaextension/CHANGELOG.md
