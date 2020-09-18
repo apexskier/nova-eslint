@@ -105,7 +105,6 @@ export function activate() {
                 linter.lintDocument(document)
             )
         );
-
         editorDisposable.add(
             editor.onDidDestroy((destroyedEditor) => {
                 const anotherEditor = nova.workspace.textEditors.find(
@@ -116,6 +115,7 @@ export function activate() {
                 if (!anotherEditor) {
                     linter.removeIssues(destroyedEditor.document.uri);
                 }
+                editorDisposable.dispose();
             })
         );
 
