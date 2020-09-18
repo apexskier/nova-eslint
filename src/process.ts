@@ -1,40 +1,22 @@
 import type { Linter } from "eslint";
 import { eslintOutputToIssue } from "./eslintOutputToIssue";
+import { getEslintPath } from "./getEslintPath";
 
-function getEslintPath() {
-    const workspaceConf = nova.workspace.config.get(
-        "apexskier.eslint.config.eslintPath",
-        "string"
-    );
-    if (workspaceConf) {
-        return workspaceConf;
-    }
-
-    const globalConf = nova.config.get(
-        "apexskier.eslint.config.eslintPath",
-        "string"
-    );
-    if (globalConf) {
-        return globalConf;
-    }
-
-    return `${nova.workspace.path}/node_modules/.bin/eslint`;
-}
-
-function exlintExecutableIsGood() {
-    const stat = nova.fs.stat(eslintPath);
-    return stat && (stat.isFile() || stat.isSymbolicLink());
-}
-
-let eslintPath = getEslintPath();
-nova.config.onDidChange("apexskier.eslint.config.eslintPath", () => {
-    eslintPath = getEslintPath();
+let eslintPath: string | null = null;
+nova.config.onDidChange("apexskier.eslint.config.eslintPath", async () => {
+    eslintPath = await getEslintPath();
     console.log("Updating ESLint executable globally", eslintPath);
 });
-nova.workspace.config.onDidChange("apexskier.eslint.config.eslintPath", () => {
-    eslintPath = getEslintPath();
-    console.log("Updating ESLint executable for workspace", eslintPath);
-});
+nova.workspace.config.onDidChange(
+    "apexskier.eslint.config.eslintPath",
+    async () => {
+        eslintPath = await getEslintPath();
+        console.log("Updating ESLint executable for workspace", eslintPath);
+    }
+);
+(async () => {
+    eslintPath = await getEslintPath();
+})();
 
 export function runEslint(
     content: string,
@@ -42,11 +24,7 @@ export function runEslint(
     // eslint-disable-next-line no-unused-vars
     callback: (issues: Array<Issue>) => void
 ) {
-    if (!exlintExecutableIsGood()) {
-        return;
-    }
-
-    if (!nova.workspace.path) {
+    if (!nova.workspace.path || !eslintPath) {
         return;
     }
 
@@ -80,12 +58,8 @@ export function runEslint(
     }
 }
 
-export function fixEslint(path: string, callback: () => void) {
-    if (!exlintExecutableIsGood()) {
-        return;
-    }
-
-    if (!nova.workspace.path) {
+export function fixEslint(path: string) {
+    if (!nova.workspace.path || !eslintPath) {
         return;
     }
 
@@ -96,9 +70,6 @@ export function fixEslint(path: string, callback: () => void) {
     });
 
     process.onStderr(handleError);
-    process.onDidExit(() => {
-        callback();
-    });
 
     process.start();
 

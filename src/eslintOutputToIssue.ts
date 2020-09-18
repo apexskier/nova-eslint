@@ -1,5 +1,16 @@
 import type { Linter } from "eslint";
 
+function eslintSeverityToNovaSeverity(severity: Linter.Severity) {
+    switch (severity) {
+        case 0:
+            return IssueSeverity.Info;
+        case 1:
+            return IssueSeverity.Warning;
+        case 2:
+            return IssueSeverity.Error;
+    }
+}
+
 export function eslintOutputToIssue(attributes: Linter.LintMessage) {
     const issue = new Issue();
 
@@ -8,19 +19,7 @@ export function eslintOutputToIssue(attributes: Linter.LintMessage) {
         issue.code = attributes.ruleId;
     }
     issue.message = attributes.message;
-
-    switch (attributes.severity) {
-        case 1:
-            issue.severity = IssueSeverity.Warning;
-            break;
-        case 2:
-            issue.severity = IssueSeverity.Error;
-            break;
-        default:
-            console.warn("Unknown issue severity", attributes.severity);
-            break;
-    }
-
+    issue.severity = eslintSeverityToNovaSeverity(attributes.severity);
     issue.line = attributes.line;
     issue.endLine = attributes.endLine;
     issue.column = attributes.column;

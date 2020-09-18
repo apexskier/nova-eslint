@@ -21,16 +21,30 @@
     ],
 
     "entitlements": {
-        "filesystem": "readonly",
         "process": true
     },
 
     "config": [
         {
             "key": "apexskier.eslint.config.fixOnSave",
-            "title": "ESLint fix on save",
+            "title": "Fix on save",
             "type": "boolean",
             "default": false
+        },
+        {
+            "key": "apexskier.eslint.config.eslintPath",
+            "title": "Path to ESLint executable",
+            "type": "path"
+        }
+    ],
+
+    "config-workspace": [
+        {
+            "key": "apexskier.eslint.config.fixOnSave",
+            "title": "Fix on save",
+            "type": "enum",
+            "values": ["Inherit from Global Settings", "Disable", "Enable"],
+            "default": "Inherit from Global Settings"
         },
         {
             "key": "apexskier.eslint.config.eslintPath",
