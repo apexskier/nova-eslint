@@ -1,5 +1,6 @@
 import { Linter } from "./linter";
 import { fixEslint } from "./process";
+import { shouldFixOnSave } from "./shouldFixOnSave";
 
 const compositeDisposable = new CompositeDisposable();
 
@@ -67,17 +68,7 @@ export function activate() {
 
         editorDisposable.add(
             editor.onWillSave((editor) => {
-                const shouldFix =
-                    nova.workspace.config.get(
-                        "apexskier.eslint.config.fixOnSave",
-                        "boolean"
-                    ) ??
-                    nova.config.get(
-                        "apexskier.eslint.config.fixOnSave",
-                        "boolean"
-                    ) ??
-                    false;
-                if (shouldFix) {
+                if (shouldFixOnSave()) {
                     const listener = editor.onDidSave((editor) => {
                         listener.dispose();
                         if (!editor.document.path) {
