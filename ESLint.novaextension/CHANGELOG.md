@@ -1,6 +1,12 @@
 # Changelog
 
-## future
+## v1.0.1
+
+### Fixed
+
+-   Fix "Fix on save" setting
+
+## v1.0.0
 
 ### Added
 

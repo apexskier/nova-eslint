@@ -1,6 +1,6 @@
 {
     "name": "nova-eslint",
-    "version": "0.3.0",
+    "version": "1.0.1",
     "description": "Lint your code files with ESLint in Nova.",
     "scripts": {
         "build": "rollup -c rollup.config.js",
