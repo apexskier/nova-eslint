@@ -3,37 +3,46 @@ import { fixEslint } from "./process";
 
 const compositeDisposable = new CompositeDisposable();
 
+// eslint-disable-next-line no-unused-vars
+function fix(workspace: Workspace, editor: TextEditor): void;
+// eslint-disable-next-line no-unused-vars
+function fix(editor: TextEditor): void;
+function fix(
+    workspaceOrEditor: Workspace | TextEditor,
+    maybeEditor?: TextEditor
+): void {
+    const editor = TextEditor.isTextEditor(workspaceOrEditor)
+        ? workspaceOrEditor
+        : maybeEditor!;
+    if (editor.document.isDirty) {
+        const listener = editor.onDidSave(() => {
+            listener.dispose();
+            innerFix();
+        });
+        editor.save();
+    } else {
+        innerFix();
+    }
+
+    function innerFix() {
+        if (!editor.document.path) {
+            nova.workspace.showErrorMessage("This document is missing a path.");
+            return;
+        }
+        console.log("Fixing", editor.document.path);
+        fixEslint(editor.document.path);
+    }
+}
+
 export function activate() {
     console.log("activating...");
 
     const linter = new Linter();
 
     compositeDisposable.add(
-        nova.commands.register(
-            "apexskier.eslint.command.fix",
-            (editor: TextEditor) => {
-                if (editor.document.isDirty) {
-                    editor.onDidSave(fix);
-                    editor.save();
-                } else {
-                    fix(editor);
-                }
-
-                function fix(editor: TextEditor) {
-                    if (!editor.document.path) {
-                        nova.workspace.showErrorMessage(
-                            "This document is missing a path."
-                        );
-                        return;
-                    }
-                    console.log(`Fixing ${editor.document.path}`);
-                    fixEslint(editor.document.path);
-                }
-            }
-        )
+        nova.commands.register("apexskier.eslint.command.fix", fix)
     );
 
-    nova.workspace.textEditors.forEach(watchEditor);
     compositeDisposable.add(nova.workspace.onDidAddTextEditor(watchEditor));
 
     function watchEditor(editor: TextEditor) {
@@ -70,15 +79,17 @@ export function activate() {
                     false;
                 if (shouldFix) {
                     const listener = editor.onDidSave((editor) => {
+                        listener.dispose();
                         if (!editor.document.path) {
                             nova.workspace.showErrorMessage(
                                 "This document is missing a path."
                             );
                             return;
                         }
-                        console.log(`Fixing ${editor.document.path}`);
-                        fixEslint(editor.document.path);
-                        listener.dispose();
+                        nova.commands.invoke(
+                            "apexskier.eslint.command.fix",
+                            editor
+                        );
                     });
                 }
                 linter.lintDocument(editor.document);
