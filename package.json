@@ -31,7 +31,7 @@
         "concurrently": "^5.2.0",
         "eslint": "^6.8.0",
         "eslint-plugin-nova": "^1.0.0-beta.3",
-        "onchange": "^7.0.0",
+        "onchange": "^7.0.2",
         "prettier": "^2.1.2",
         "rollup": "^2.7.2",
         "rollup-plugin-typescript2": "^0.27.2",
