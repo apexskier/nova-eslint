@@ -4,7 +4,7 @@
 
 ### Added
 
--   Apply single fix or suggestion Editor command
+-   Apply Suggestion editor command
 
 ## v1.0.1
 
