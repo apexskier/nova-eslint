@@ -1,5 +1,4 @@
 import type { Linter } from "eslint";
-import { eslintOutputToIssue } from "./eslintOutputToIssue";
 import { getEslintPath } from "./getEslintPath";
 
 let eslintPath: string | null = null;
@@ -22,7 +21,7 @@ export function runEslint(
     content: string,
     uri: string,
     // eslint-disable-next-line no-unused-vars
-    callback: (issues: Array<Issue>) => void
+    callback: (issues: Array<Linter.LintMessage>) => void
 ) {
     if (!nova.workspace.path || !eslintPath) {
         return;
@@ -50,11 +49,11 @@ export function runEslint(
 
     function handleOutput(output: string) {
         const parsedOutput = JSON.parse(output);
-        const offenses = parsedOutput[0]["messages"] as Array<
+        const messages = parsedOutput[0]["messages"] as Array<
             Linter.LintMessage
         >;
 
-        callback(offenses.map(eslintOutputToIssue));
+        callback(messages);
     }
 }
 

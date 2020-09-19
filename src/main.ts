@@ -1,6 +1,7 @@
 import { Linter } from "./linter";
 import { fixEslint } from "./process";
 import { shouldFixOnSave } from "./shouldFixOnSave";
+import { createSuggestionCommandHandler } from "./suggestionCommand";
 
 const compositeDisposable = new CompositeDisposable();
 
@@ -42,6 +43,12 @@ export function activate() {
 
     compositeDisposable.add(
         nova.commands.register("apexskier.eslint.command.fix", fix)
+    );
+    compositeDisposable.add(
+        nova.commands.register(
+            "apexskier.eslint.command.suggestForCursor",
+            createSuggestionCommandHandler(linter)
+        )
     );
 
     compositeDisposable.add(nova.workspace.onDidAddTextEditor(watchEditor));

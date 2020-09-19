@@ -1,5 +1,11 @@
 # Changelog
 
+## future
+
+### Added
+
+-   Apply single fix or suggestion Editor command
+
 ## v1.0.1
 
 ### Fixed
