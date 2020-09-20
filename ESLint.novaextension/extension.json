@@ -1,76 +1,76 @@
 {
-    "identifier": "apexskier.eslint",
-    "name": "ESLint",
-    "organization": "Cameron Little",
-    "description": "Lint your code with ESLint.",
-    "version": "1.0.1",
-    "categories": ["issues", "formatters", "commands"],
-    "homepage": "https://github.com/apexskier/nova-eslint#readme",
-    "repository": "https://github.com/apexskier/nova-eslint",
-    "bugs": "https://github.com/apexskier/nova-eslint/issues",
-    "license": "MIT",
+  "identifier": "apexskier.eslint",
+  "name": "ESLint",
+  "organization": "Cameron Little",
+  "description": "Lint your code with ESLint.",
+  "version": "1.0.1",
+  "categories": ["issues", "formatters", "commands"],
+  "homepage": "https://github.com/apexskier/nova-eslint#readme",
+  "repository": "https://github.com/apexskier/nova-eslint",
+  "bugs": "https://github.com/apexskier/nova-eslint/issues",
+  "license": "MIT",
 
-    "main": "main.dist.js",
+  "main": "main.dist.js",
 
-    "activationEvents": [
-        "onLanguage:javascript",
-        "onLanguage:typescript",
-        "onLanguage:jsx",
-        "onLanguage:tsx",
-        "onWorkspaceContains:.eslintrc.*"
-    ],
+  "activationEvents": [
+    "onLanguage:javascript",
+    "onLanguage:typescript",
+    "onLanguage:jsx",
+    "onLanguage:tsx",
+    "onWorkspaceContains:.eslintrc.*"
+  ],
 
-    "entitlements": {
-        "process": true
+  "entitlements": {
+    "process": true
+  },
+
+  "config": [
+    {
+      "key": "apexskier.eslint.config.fixOnSave",
+      "title": "Fix on save",
+      "type": "boolean",
+      "default": false
     },
-
-    "config": [
-        {
-            "key": "apexskier.eslint.config.fixOnSave",
-            "title": "Fix on save",
-            "type": "boolean",
-            "default": false
-        },
-        {
-            "key": "apexskier.eslint.config.eslintPath",
-            "title": "Path to ESLint executable",
-            "type": "path"
-        }
-    ],
-
-    "config-workspace": [
-        {
-            "key": "apexskier.eslint.config.fixOnSave",
-            "title": "Fix on save",
-            "type": "enum",
-            "values": ["Inherit from Global Settings", "Disable", "Enable"],
-            "default": "Inherit from Global Settings"
-        },
-        {
-            "key": "apexskier.eslint.config.eslintPath",
-            "title": "Path to ESLint executable",
-            "type": "path"
-        }
-    ],
-
-    "commands": {
-        "editor": [
-            {
-                "title": "Fix All Issues",
-                "command": "apexskier.eslint.command.fix",
-                "when": "documentHasPath && editorHasFocus",
-                "filters": {
-                    "syntaxes": ["javascript", "typescript", "jsx", "tsx"]
-                }
-            },
-            {
-                "title": "Apply a Suggestion",
-                "command": "apexskier.eslint.command.suggestForCursor",
-                "when": "editorHasFocus",
-                "filters": {
-                    "syntaxes": ["javascript", "typescript", "jsx", "tsx"]
-                }
-            }
-        ]
+    {
+      "key": "apexskier.eslint.config.eslintPath",
+      "title": "Path to ESLint executable",
+      "type": "path"
     }
+  ],
+
+  "config-workspace": [
+    {
+      "key": "apexskier.eslint.config.fixOnSave",
+      "title": "Fix on save",
+      "type": "enum",
+      "values": ["Inherit from Global Settings", "Disable", "Enable"],
+      "default": "Inherit from Global Settings"
+    },
+    {
+      "key": "apexskier.eslint.config.eslintPath",
+      "title": "Path to ESLint executable",
+      "type": "path"
+    }
+  ],
+
+  "commands": {
+    "editor": [
+      {
+        "title": "Fix All Issues",
+        "command": "apexskier.eslint.command.fix",
+        "when": "documentHasPath && editorHasFocus",
+        "filters": {
+          "syntaxes": ["javascript", "typescript", "jsx", "tsx"]
+        }
+      },
+      {
+        "title": "Apply a Suggestion",
+        "command": "apexskier.eslint.command.suggestForCursor",
+        "when": "editorHasFocus",
+        "filters": {
+          "syntaxes": ["javascript", "typescript", "jsx", "tsx"]
+        }
+      }
+    ]
+  }
 }
