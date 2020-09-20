@@ -43,7 +43,9 @@ export function createSuggestionCommandHandler(linter: Linter) {
         }))
       );
     }
-    const choice = await showChoicePalette(choices, ({ title }) => title);
+    const choice = await showChoicePalette(choices, ({ title }) => title, {
+      placeholder: message.message,
+    });
     if (choice) {
       editor.edit((edit) => {
         edit.replace(
