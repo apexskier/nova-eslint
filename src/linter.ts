@@ -70,7 +70,12 @@ export class Linter {
     this._issues.remove(path);
   }
 
-  getSuggestions(editor: TextEditor) {
+  getAllMessages(editor: TextEditor) {
+    const path = nova.path.normalize(editor.document.uri);
+    return this._messages.get(path) ?? [];
+  }
+
+  getMessageAtSelection(editor: TextEditor) {
     const path = nova.path.normalize(editor.document.uri);
     const messages = this._messages.get(path) ?? [];
     const issues = this._issues.get(path);

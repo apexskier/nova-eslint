@@ -22,34 +22,53 @@ export async function showChoicePalette<T>(
   return choices[index];
 }
 
+type FixChoiceType = { fix: Rule.Fix } | { fixAll: true };
+function isFixAll(x: FixChoiceType): x is { fixAll: true } {
+  return !!(x as { fixAll: true }).fixAll;
+}
+
 export function createSuggestionCommandHandler(linter: Linter) {
   return async (editor: TextEditor) => {
-    const message = linter.getSuggestions(editor);
-    if (!message?.fix && !message?.suggestions?.length) {
-      nova.workspace.showWarningMessage("No suggestions found");
+    const choices: Array<
+      { title: string } & ({ fix: Rule.Fix } | { fixAll: true })
+    > = [];
+    const message = linter.getMessageAtSelection(editor);
+    if (message) {
+      if (message.fix) {
+        choices.push({
+          title: `Fix this ${message.ruleId} problem`,
+          fix: message.fix,
+        });
+      }
+      if (message.suggestions) {
+        choices.push(
+          ...message.suggestions.map((suggestion) => ({
+            title: suggestion.desc,
+            fix: suggestion.fix,
+          }))
+        );
+      }
+    }
+    choices.push({ title: "Fix all auto-fixable problems", fixAll: true });
+    const choice = await showChoicePalette(choices, ({ title }) => title, {
+      placeholder: message?.message,
+    });
+    if (!choice) {
       return;
     }
-    const choices: Array<{ title: string; fix: Rule.Fix }> = [];
-    if (message.fix) {
-      choices.push({ title: "Fix", fix: message.fix });
-    }
-    if (message.suggestions) {
-      choices.push(
-        ...message.suggestions.map((suggestion) => ({
-          title: suggestion.desc,
-          fix: suggestion.fix,
-        }))
-      );
-    }
-    const choice = await showChoicePalette(choices, ({ title }) => title, {
-      placeholder: message.message,
-    });
-    if (choice) {
+    if (isFixAll(choice)) {
+      const messages = linter.getAllMessages(editor).filter((m) => m.fix);
       editor.edit((edit) => {
-        edit.replace(
-          new Range(choice.fix.range[0], choice.fix.range[1]),
-          choice.fix.text
-        );
+        for (const m of messages.reverse()) {
+          const fix = m.fix!; // filter above ensures fix is available
+          edit.replace(new Range(fix.range[0], fix.range[1]), fix.text);
+        }
+      });
+      nova.commands.invoke("apexskier.eslint.command.fix", editor);
+    } else {
+      const { fix } = choice;
+      editor.edit((edit) => {
+        edit.replace(new Range(fix.range[0], fix.range[1]), fix.text);
       });
     }
   };
