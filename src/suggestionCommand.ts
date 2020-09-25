@@ -25,8 +25,6 @@ export async function showChoicePalette<T>(
 export function createSuggestionCommandHandler(linter: Linter) {
   return async (editor: TextEditor) => {
     const message = linter.getSuggestions(editor);
-
-    console.log("message", JSON.stringify(message));
     if (!message?.fix && !message?.suggestions?.length) {
       nova.workspace.showWarningMessage("No suggestions found");
       return;

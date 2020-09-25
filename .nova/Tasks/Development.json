@@ -2,11 +2,11 @@
   "actions": {
     "build": {
       "enabled": true,
-      "script": "yarn build"
+      "script": "NO_UPDATE_NOTIFIER=true yarn build"
     },
     "run": {
       "enabled": true,
-      "script": "yarn watch"
+      "script": "NO_UPDATE_NOTIFIER=true yarn watch"
     }
   },
   "identifier": "46425EB0-1CF7-49EB-AD74-1E40B9F22EA6",

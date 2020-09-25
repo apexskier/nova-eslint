@@ -56,15 +56,16 @@ export function activate() {
   function watchEditor(editor: TextEditor) {
     const document = editor.document;
 
-    if (document.isRemote) {
-      // TODO: what to do...
-      // return;
-    }
-
     if (
-      !["javascript", "typescript", "tsx", "jsx"].includes(
-        document.syntax ?? ""
-      )
+      ![
+        "javascript",
+        "typescript",
+        "tsx",
+        "jsx",
+        "vue",
+        "html",
+        "markdown",
+      ].includes(document.syntax ?? "")
     ) {
       return;
     }

@@ -1,17 +1,21 @@
 # ESLint Extension for Nova
 
-Provides integration with ESLint to lint your JavaScript and TypeScript source
-files.
+Provides integration with ESLint to lint your code.
 
 **NOTE:** This is a fork of an earlier version of this plugin. See https://github.com/jsmecham/nova-eslint/pull/6 for more context on why I forked.
 
 ## Features
 
 - Inline ESLint issue reporting
-- Fix All Issues command
-- Apply a Suggestion command ([more information](https://eslint.org/docs/developer-guide/working-with-rules#providing-suggestions))
+- "Fix All Issues" command
+- "Apply a Suggestion" command ([more information](https://eslint.org/docs/developer-guide/working-with-rules#providing-suggestions))
 - Auto-fix on save preference
-- Custom eslint installation preference
+- Custom ESLint install locations
+- Supports multiple file formats
+  - Javascript/Typescript
+  - HTML (requires [`eslint-plugin-html`](https://www.npmjs.com/package/eslint-plugin-html))
+  - Markdown (requires [`eslint-plugin-markdown`](https://www.npmjs.com/package/eslint-plugin-markdown))
+  - Vue (requires [`eslint-plugin-vue`](https://www.npmjs.com/package/eslint-plugin-vue) and the [Vue extension](nova://extension/?id=com.tommasonegri.Vue&name=Vue))
 
 ### Screenshots
 

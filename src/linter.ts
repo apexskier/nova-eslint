@@ -33,24 +33,35 @@ function positionToRange(
 export class Linter {
   private _issues = new IssueCollection();
   // note - the order of this should match that of _issues
-  private _messages = new Map<string, Array<EslintLinter.LintMessage>>();
-  private _processesForPaths: { [path: string]: Process | undefined } = {};
+  private _messages = new Map<
+    string,
+    ReadonlyArray<EslintLinter.LintMessage>
+  >();
+  private _processesForPaths: { [path: string]: Disposable | undefined } = {};
 
   lintDocument(document: TextDocument) {
+    if (!document.syntax) {
+      return;
+    }
     const contentRange = new Range(0, document.length);
     const content = document.getTextInRange(contentRange);
 
-    this.lintString(content, document.uri);
+    this.lintString(content, document.uri, document.syntax);
   }
 
-  lintString(string: string, uri: string) {
+  private lintString(string: string, uri: string, syntax: string) {
     const path = nova.path.normalize(uri);
-    this._processesForPaths[path]?.kill();
-    this._processesForPaths[path] = runEslint(string, path, (messages) => {
-      delete this._processesForPaths[path];
-      this._messages.set(path, messages);
-      this._issues.set(path, messages.map(eslintOutputToIssue));
-    });
+    this._processesForPaths[path]?.dispose();
+    this._processesForPaths[path] = runEslint(
+      string,
+      path,
+      syntax,
+      (messages) => {
+        delete this._processesForPaths[path];
+        this._messages.set(path, messages);
+        this._issues.set(path, messages.map(eslintOutputToIssue));
+      }
+    );
   }
 
   removeIssues(uri: string) {

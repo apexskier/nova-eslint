@@ -1,0 +1,1 @@
+`index.html` should have one warning (vue/html-self-closing) when `.eslintrc.js` is present _and_ the [Vue extension](nova://extension/?id=com.tommasonegri.Vue&name=Vue) is installed. Disabling `.eslintrc.js` (rename it) should prevent inline errors.

@@ -60,7 +60,15 @@
         "command": "apexskier.eslint.command.fix",
         "when": "documentHasPath && editorHasFocus",
         "filters": {
-          "syntaxes": ["javascript", "typescript", "jsx", "tsx"]
+          "syntaxes": [
+            "javascript",
+            "typescript",
+            "jsx",
+            "tsx",
+            "vue",
+            "html",
+            "markdown"
+          ]
         }
       },
       {
@@ -68,7 +76,15 @@
         "command": "apexskier.eslint.command.suggestForCursor",
         "when": "editorHasFocus",
         "filters": {
-          "syntaxes": ["javascript", "typescript", "jsx", "tsx"]
+          "syntaxes": [
+            "javascript",
+            "typescript",
+            "jsx",
+            "tsx",
+            "vue",
+            "html",
+            "markdown"
+          ]
         }
       }
     ]

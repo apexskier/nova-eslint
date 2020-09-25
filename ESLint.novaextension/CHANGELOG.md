@@ -1,5 +1,15 @@
 # Changelog
 
+## future
+
+### Added
+
+- Add support for HTML, Markdown, and Vue
+
+### Changed
+
+- Performance improvements
+
 ## v1.1.0
 
 ### Added
