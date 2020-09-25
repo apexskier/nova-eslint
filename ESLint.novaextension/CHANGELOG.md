@@ -10,7 +10,7 @@
 
 - Performance improvements
 - Improved the "Apply a Suggestion" command
-  - Add semi-experimental choice to auto-fix all without saving to disk
+  - Add choice to fix all
   - Slight UX changes
 
 ## v1.1.0

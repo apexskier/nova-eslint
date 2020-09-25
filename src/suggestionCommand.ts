@@ -57,13 +57,6 @@ export function createSuggestionCommandHandler(linter: Linter) {
       return;
     }
     if (isFixAll(choice)) {
-      const messages = linter.getAllMessages(editor).filter((m) => m.fix);
-      editor.edit((edit) => {
-        for (const m of messages.reverse()) {
-          const fix = m.fix!; // filter above ensures fix is available
-          edit.replace(new Range(fix.range[0], fix.range[1]), fix.text);
-        }
-      });
       nova.commands.invoke("apexskier.eslint.command.fix", editor);
     } else {
       const { fix } = choice;
