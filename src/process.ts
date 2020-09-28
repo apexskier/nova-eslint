@@ -49,8 +49,8 @@ export function runEslint(
     // eslint-disable-next-line no-unused-vars
     callback: (config: Linter.Config) => void
   ): void {
-    const configProcess = new Process("/usr/bin/env", {
-      args: [eslint, "--format=json", "--print-config", cleanFileName],
+    const configProcess = new Process(eslint, {
+      args: ["--format=json", "--print-config", cleanFileName],
       cwd: workspacePath,
       stdio: "pipe",
     });
@@ -61,7 +61,7 @@ export function runEslint(
     });
     let configStr = "";
     configProcess.onStdout((line) => (configStr += line));
-    configProcess.onStderr(handleError);
+    configProcess.onStderr(console.warn.bind(console));
     configProcess.onDidExit((status) => {
       const configProcessWasTerminated = status === 15;
       if (status !== 0 && !configProcessWasTerminated) {
@@ -81,14 +81,8 @@ export function runEslint(
     // eslint-disable-next-line no-unused-vars
     callback: (issues: ReadonlyArray<Linter.LintMessage>) => void
   ): void {
-    const lintProcess = new Process("/usr/bin/env", {
-      args: [
-        eslint,
-        "--format=json",
-        "--stdin",
-        "--stdin-filename",
-        cleanFileName,
-      ],
+    const lintProcess = new Process(eslint, {
+      args: ["--format=json", "--stdin", "--stdin-filename", cleanFileName],
       cwd: workspacePath,
       stdio: "pipe",
     });
@@ -100,7 +94,7 @@ export function runEslint(
 
     let lintOutput = "";
     lintProcess.onStdout((line) => (lintOutput += line));
-    lintProcess.onStderr(handleError);
+    lintProcess.onStderr(console.warn.bind(console));
     lintProcess.onDidExit((status) => {
       const lintProcessWasTerminated = status === 15;
       // https://eslint.org/docs/user-guide/command-line-interface#exit-codes
@@ -156,19 +150,15 @@ export function fixEslint(path: string) {
     return;
   }
 
-  const process = new Process("/usr/bin/env", {
-    args: [eslintPath, "--fix", "--format=json", path],
+  const process = new Process(eslintPath, {
+    args: ["--fix", "--format=json", path],
     cwd: nova.workspace.path,
     stdio: "pipe",
   });
 
-  process.onStderr(handleError);
+  process.onStderr(console.warn.bind(console));
 
   process.start();
 
   return process;
-}
-
-function handleError(error: string) {
-  console.warn(error);
 }
