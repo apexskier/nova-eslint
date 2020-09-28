@@ -1,5 +1,15 @@
 # Changelog
 
+## future
+
+### Fixed
+
+- Fix errors when eslint executable isn't found
+
+### Changed
+
+- Requires readonly filesystem permissions
+
 ## v1.2.0
 
 ### Added

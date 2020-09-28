@@ -45,6 +45,10 @@ export async function getEslintPath(): Promise<string | null> {
   } else {
     execPath = nova.path.join(npmBinDir, "eslint");
   }
+
+  if (!nova.fs.access(execPath, nova.fs.X_OK)) {
+    return null;
+  }
   return execPath;
 
   // Note: I don't check file access here because I'm not using filesystem entitlements

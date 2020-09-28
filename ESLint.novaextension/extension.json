@@ -21,6 +21,7 @@
   ],
 
   "entitlements": {
+    "filesystem": "readonly",
     "process": true
   },
 
