@@ -33,7 +33,7 @@
     "eslint": "^7.10.0",
     "eslint-plugin-html": "^6.1.0",
     "eslint-plugin-markdown": "^2.0.0-rc.0",
-    "eslint-plugin-nova": "^1.0.0",
+    "eslint-plugin-nova": "^1.1.0",
     "eslint-plugin-vue": "^7.0.0-beta.4",
     "onchange": "^7.0.2",
     "prettier": "^2.1.2",
