@@ -132,10 +132,10 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-13.7.4.tgz#76c3cb3a12909510f52e5dc04a6298cdf9504ffd"
   integrity sha512-oVeL12C6gQS/GAExndigSaLxTrKpQPxewx9bOcwfvJiJge4rr7wNaph4J+ns5hrmIV2as5qxqN8YKthn9qh0jw==
 
-"@types/nova-editor-node@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@types/nova-editor-node/-/nova-editor-node-1.0.4.tgz#defc33e5774177d1e5b1d037434842fecdadad33"
-  integrity sha512-qduxjQJCp6tENGOaj33JzpYEnslUNRasyXcZjsdVi0Hr9lYxRFciKFXp4kmBvDphi2vWlmW9wPKfj0oGGPoiFw==
+"@types/nova-editor-node@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@types/nova-editor-node/-/nova-editor-node-1.2.0.tgz#51a1f83db9aadb4da75a03278698ae3f24d8c8f9"
+  integrity sha512-qMjXLpgOfCUC1uP+Y7ED33fTZWNJpABEnsjQHH627fvNVSUyGwqzuxhh6Sa5mxFW+fGrxrG2AgGWbiSPDkP8kQ==
 
 "@types/resolve@1.17.1":
   version "1.17.1"
