@@ -12,8 +12,6 @@ Run the Development task to build scripts and auto-rebuild on file changes.
 
 Turn on extension development in Nova in Preferences > General > Extension Development. If you've installed the extension from the Extension Library, disable it, then activate the local one with Extensions > Activate Project as Extension.
 
-**note** Running the watcher can cause a lot of restarts of the extension, which often causes Nova's extension service to crash. I'd recommend building manually instead. If the extension service crashes, deactivate the project as an extension and reactivate it.
-
 ### Debugging
 
 Use the Extension Console in Nova to debug the extension. I haven't found a way to get a debugger attached to the JavaScriptCore context.
