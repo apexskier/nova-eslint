@@ -2,7 +2,7 @@ name: Release management
 
 on:
   release:
-    types: [published]
+    types: [released, prereleased]
 
 jobs:
   release:
