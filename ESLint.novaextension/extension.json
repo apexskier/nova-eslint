@@ -36,6 +36,11 @@
       "key": "apexskier.eslint.config.eslintPath",
       "title": "Path to ESLint executable",
       "type": "path"
+    },
+    {
+      "key": "apexskier.eslint.config.eslintConfigPath",
+      "title": "Path to ESLint configuration",
+      "type": "path"
     }
   ],
 

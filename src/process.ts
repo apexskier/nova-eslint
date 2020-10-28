@@ -1,7 +1,9 @@
 import type { Linter } from "eslint";
 import { getEslintPath } from "./getEslintPath";
+import { getEslintConfig } from "./getEslintConfig";
 
 let eslintPath: string | null = null;
+let eslintConfigPath: string | null = null;
 nova.config.onDidChange("apexskier.eslint.config.eslintPath", async () => {
   eslintPath = await getEslintPath();
   console.log("Updating ESLint executable globally", eslintPath);
@@ -13,8 +15,16 @@ nova.workspace.config.onDidChange(
     console.log("Updating ESLint executable for workspace", eslintPath);
   }
 );
++nova.workspace.config.onDidChange(
+  "apexskier.eslint.config.eslintConfigPath",
+  () => {
+    eslintConfigPath = getEslintConfig();
+    console.log("Updating ESLint config for workspace", eslintConfigPath);
+  }
+);
 (async () => {
   eslintPath = await getEslintPath();
+  eslintConfigPath = getEslintConfig();
 })();
 
 const syntaxToRequiredPlugin: { [syntax: string]: string | undefined } = {
@@ -35,6 +45,7 @@ export function runEslint(
     return disposable;
   }
   const eslint = eslintPath;
+  const eslintConfig = eslintConfigPath;
   const workspacePath = nova.workspace.path;
   // remove file:/Volumes/Macintosh HD from uri
   const cleanFileName = "/" + decodeURI(uri.split("/").slice(3).join("/"));
@@ -80,8 +91,17 @@ export function runEslint(
     // eslint-disable-next-line no-unused-vars
     callback: (issues: ReadonlyArray<Linter.LintMessage>) => void
   ): void {
+    const lintArgs = [
+      "--format=json",
+      "--stdin",
+      "--stdin-filename",
+      cleanFileName,
+    ];
+    if (eslintConfig) {
+      lintArgs.unshift("--config", eslintConfig);
+    }
     const lintProcess = new Process(eslint, {
-      args: ["--format=json", "--stdin", "--stdin-filename", cleanFileName],
+      args: lintArgs,
       cwd: workspacePath,
       stdio: "pipe",
     });
