@@ -17,8 +17,6 @@ nova.workspace.config.onDidChange(
   eslintPath = await getEslintPath();
 })();
 
-const filePrefixRegex = /^file:/;
-
 const syntaxToRequiredPlugin: { [syntax: string]: string | undefined } = {
   html: "html",
   vue: "vue",
@@ -38,7 +36,8 @@ export function runEslint(
   }
   const eslint = eslintPath;
   const workspacePath = nova.workspace.path;
-  const cleanFileName = decodeURI(uri).replace(filePrefixRegex, "");
+  // remove file:/Volumes/Macintosh HD from uri
+  const cleanFileName = "/" + decodeURI(uri.split("/").slice(3).join("/"));
 
   // one idea for a performance improvement here would be to cache the needed results
   // on a file path basis.
