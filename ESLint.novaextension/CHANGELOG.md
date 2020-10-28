@@ -1,5 +1,11 @@
 # Changelog
 
+## future
+
+### Fixed
+
+- Fix file URIs to address project relative lint failures
+
 ## v1.2.1
 
 ### Fixed
