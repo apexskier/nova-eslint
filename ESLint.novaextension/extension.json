@@ -39,7 +39,7 @@
     }
   ],
 
-  "config-workspace": [
+  "configWorkspace": [
     {
       "key": "apexskier.eslint.config.fixOnSave",
       "title": "Fix on save",
