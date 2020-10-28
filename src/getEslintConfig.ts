@@ -1,6 +1,9 @@
-// returns project-specific eslint config
+// returns custom eslint config path
 export function getEslintConfig(): string | null {
-  let eslintConfigPath: string | null = null;
+  let eslintConfigPath: string | null = nova.config.get(
+    "apexskier.eslint.config.eslintConfigPath",
+    "string"
+  );
   const workspaceEslintConfigPath = nova.workspace.config.get(
     "apexskier.eslint.config.eslintConfigPath",
     "string"

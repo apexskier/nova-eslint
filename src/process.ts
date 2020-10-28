@@ -15,7 +15,11 @@ nova.workspace.config.onDidChange(
     console.log("Updating ESLint executable for workspace", eslintPath);
   }
 );
-+nova.workspace.config.onDidChange(
+nova.config.onDidChange("apexskier.eslint.config.eslintConfigPath", () => {
+  eslintConfigPath = getEslintConfig();
+  console.log("Updating ESLint config globally", eslintConfigPath);
+});
+nova.workspace.config.onDidChange(
   "apexskier.eslint.config.eslintConfigPath",
   () => {
     eslintConfigPath = getEslintConfig();

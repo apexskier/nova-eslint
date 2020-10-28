@@ -11,6 +11,7 @@ Provides integration with ESLint to lint your code.
 - "Apply a Suggestion" command ([more information](https://eslint.org/docs/developer-guide/working-with-rules#providing-suggestions))
 - Auto-fix on save preference
 - Custom ESLint install locations
+- Custom ESLint config file location
 - Supports multiple file formats
   - Javascript/Typescript
   - HTML (requires [`eslint-plugin-html`](https://www.npmjs.com/package/eslint-plugin-html))

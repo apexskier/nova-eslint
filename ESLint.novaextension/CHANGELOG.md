@@ -1,6 +1,10 @@
 # Changelog
 
-## future
+## v1.3.0
+
+### Added
+
+- Add preference to specify custom ESLint config path
 
 ### Fixed
 
