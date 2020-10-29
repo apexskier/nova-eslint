@@ -18,6 +18,12 @@ Provides integration with ESLint to lint your code.
   - Markdown (requires [`eslint-plugin-markdown`](https://www.npmjs.com/package/eslint-plugin-markdown))
   - Vue (requires [`eslint-plugin-vue`](https://www.npmjs.com/package/eslint-plugin-vue) and the [Vue extension](nova://extension/?id=com.tommasonegri.Vue&name=Vue))
 
+## Setup
+
+To use this, follow the [Getting Started with ESLint](https://eslint.org/docs/user-guide/getting-started) instructions. You'll need to have ESLint installed locally in your project (it should be installed in `${workspaceRoot}/node_modules/eslint`). If you rely on a global or custom ESLint installation you can configure it by setting the "Path to ESLint executable" preference in Nova. This is accessible globally at Extensions > Extension Library… > ESLint > Preferences, and per-workspace at Project > Project Settings… > ESLint.
+
+To verify you've set up correctly, run `$(npm bin)/eslint ./path/to/file.js` on a file and make sure the output is correct (no output if you don't expect issues, expected issues if you do).
+
 ### Screenshots
 
 <img src="https://raw.githubusercontent.com/apexskier/nova-eslint/72c645668abed4e0d719a6f62cf1bc5e02691bae/ESLint.novaextension/Images/inline-errors.png" alt="Inline errors" width="400" />
