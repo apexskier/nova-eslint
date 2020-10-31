@@ -2,8 +2,6 @@
 
 Provides integration with ESLint to lint your code.
 
-**NOTE:** This is a fork of an earlier version of this plugin. See https://github.com/jsmecham/nova-eslint/pull/6 for more context on why I forked.
-
 ## Features
 
 - Inline ESLint issue reporting
@@ -27,8 +25,14 @@ To verify you've set up correctly, run `$(npm bin)/eslint ./path/to/file.js` on 
 
 ### Screenshots
 
-<img src="https://raw.githubusercontent.com/apexskier/nova-eslint/72c645668abed4e0d719a6f62cf1bc5e02691bae/ESLint.novaextension/Images/inline-errors.png" alt="Inline errors" width="400" />
+<img src="https://raw.githubusercontent.com/apexskier/nova-eslint/e041ad286b008f5b28402f19f8d2a79a3767d852/ESLint.novaextension/Images/inline-errors.png" alt="Inline errors" width="400" />
 
-<img src="https://raw.githubusercontent.com/apexskier/nova-eslint/72c645668abed4e0d719a6f62cf1bc5e02691bae/ESLint.novaextension/Images/sidebar-errors.png" alt="Sidebar errors" width="400" />
+<img src="https://raw.githubusercontent.com/apexskier/nova-eslint/e041ad286b008f5b28402f19f8d2a79a3767d852/ESLint.novaextension/Images/sidebar-errors.png" alt="Sidebar errors" width="400" />
 
-<img src="https://raw.githubusercontent.com/apexskier/nova-eslint/8069c6d827b0665784d3f7c98b1b5ff654f97269/ESLint.novaextension/Images/suggestions.png" alt="Suggestions" width="400" />
+<img src="https://raw.githubusercontent.com/apexskier/nova-eslint/e041ad286b008f5b28402f19f8d2a79a3767d852/ESLint.novaextension/Images/suggestions.png" alt="Suggestions" width="400" />
+
+### Fork
+
+**NOTE:** This is a fork of an earlier version of this plugin. See https://github.com/jsmecham/nova-eslint/pull/6 for more context on why I forked.
+
+**UPDATE:** Since forking, this extension has overtaken the original in total installs. Because forked repositories have some management limitations and the code has evolved so much, I've unforked on GitHub. The original fork is present at https://github.com/apexskier/nova-eslint-forked.
