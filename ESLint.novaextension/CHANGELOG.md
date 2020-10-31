@@ -1,11 +1,15 @@
 # Changelog
 
-## future
+## v1.5.0
 
 ### Added
 
 - Show suggestions for all current lint violations, instead of just the first
 - Add suggestion to ignore the current lint violation
+
+### Fixed
+
+- Fixed errors due to missing plugins in the console
 
 ## v1.4.0
 
