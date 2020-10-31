@@ -9,6 +9,7 @@ Provides integration with ESLint to lint your code.
 - Inline ESLint issue reporting
 - "Fix All Issues" command
 - "Apply a Suggestion" command ([more information](https://eslint.org/docs/developer-guide/working-with-rules#providing-suggestions))
+- Quick suggestion to ignore an issue
 - Auto-fix on save preference
 - Custom ESLint install locations
 - Custom ESLint config file location
@@ -30,4 +31,4 @@ To verify you've set up correctly, run `$(npm bin)/eslint ./path/to/file.js` on 
 
 <img src="https://raw.githubusercontent.com/apexskier/nova-eslint/72c645668abed4e0d719a6f62cf1bc5e02691bae/ESLint.novaextension/Images/sidebar-errors.png" alt="Sidebar errors" width="400" />
 
-<img src="https://raw.githubusercontent.com/apexskier/nova-eslint/72c645668abed4e0d719a6f62cf1bc5e02691bae/ESLint.novaextension/Images/suggestions.png" alt="Suggestions" width="400" />
+<img src="https://raw.githubusercontent.com/apexskier/nova-eslint/8069c6d827b0665784d3f7c98b1b5ff654f97269/ESLint.novaextension/Images/suggestions.png" alt="Suggestions" width="400" />

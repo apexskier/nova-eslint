@@ -1,5 +1,12 @@
 # Changelog
 
+## future
+
+### Added
+
+- Show suggestions for all current lint violations, instead of just the first
+- Add suggestion to ignore the current lint violation
+
 ## v1.4.0
 
 ### Added

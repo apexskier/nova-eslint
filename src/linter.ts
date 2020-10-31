@@ -75,7 +75,7 @@ export class Linter implements Disposable {
   }
 
   async fixEditor(editor: TextEditor) {
-    const [messages, issues] = this._getAllMessages(editor.document);
+    const [messages, issues] = this._getAllMessages(editor.document.uri);
     const newIssues: Array<Issue> = [];
     await editor.edit((edit) => {
       messages
@@ -101,38 +101,48 @@ export class Linter implements Disposable {
   }
 
   private _getAllMessages(
-    document: TextDocument
+    uri: string
   ): [ReadonlyArray<ESLintLinter.LintMessage>, ReadonlyArray<Issue>] {
-    const result = this._results.get(document.uri);
-    const issues = this._issues.get(document.uri);
+    const result = this._results.get(uri);
+    const issues = this._issues.get(uri);
     if (!result || result.messages.length != issues.length) {
       throw new Error("inconsistent data in Linter");
     }
     return [result.messages, issues];
   }
 
-  getMessageAtSelection(
+  interactWithMessagesAtSelection(
     editor: TextEditor
-  ): ESLintLinter.LintMessage | undefined {
-    const [messages, issues] = this._getAllMessages(editor.document);
-    return messages.find((_, i) => {
-      // annoyingly, nova doesn't provide a getter for this if col/line is set
-      // const issueRange = issues[i].textRange!;
-      const issue = issues[i];
-      const position = {
-        line: issue.line!,
-        column: issue.column!,
-        endLine: issue.endLine!,
-        endColumn: issue.endColumn!,
-      };
-      const issueRange = positionToRange(editor.document, position);
+  ): ReadonlyArray<{ message: ESLintLinter.LintMessage; clear(): void }> {
+    const [messages, issues] = this._getAllMessages(editor.document.uri);
+    return messages
+      .map((message, i) => ({
+        message,
+        clear: () => {
+          this._issues.set(
+            editor.document.uri,
+            this._issues.get(editor.document.uri).filter((_, j) => i !== j)
+          );
+        },
+      }))
+      .filter((_, i) => {
+        // annoyingly, nova doesn't provide a getter for this if col/line is set
+        // const issueRange = issues[i].textRange!;
+        const issue = issues[i];
+        const position = {
+          line: issue.line!,
+          column: issue.column!,
+          endLine: issue.endLine!,
+          endColumn: issue.endColumn!,
+        };
+        const issueRange = positionToRange(editor.document, position);
 
-      return (
-        editor.selectedRange.intersectsRange(issueRange) ||
-        (editor.selectedRange.empty &&
-          issueRange.containsIndex(editor.selectedRange.start))
-      );
-    });
+        return (
+          editor.selectedRange.intersectsRange(issueRange) ||
+          (editor.selectedRange.empty &&
+            issueRange.containsIndex(editor.selectedRange.start))
+        );
+      });
   }
 
   dispose() {
