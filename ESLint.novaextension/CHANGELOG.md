@@ -1,6 +1,6 @@
 # Changelog
 
-## future
+## v1.4.0
 
 ### Added
 
@@ -8,7 +8,7 @@
 
 ### Changed
 
-- When fixing all issues, apply fixes atomically in editor before saving (make's them must faster)
+- When fixing all issues, apply fixes atomically in editor before saving (way faster)
 
 ### Fixed
 
