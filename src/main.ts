@@ -1,45 +1,40 @@
 import { Linter } from "./linter";
-import { fixEslint } from "./process";
+import { initialize } from "./process";
 import { shouldFixOnSave } from "./shouldFixOnSave";
 import { createSuggestionCommandHandler } from "./suggestionCommand";
 
 const compositeDisposable = new CompositeDisposable();
 
-// eslint-disable-next-line no-unused-vars
-function fix(workspace: Workspace, editor: TextEditor): void;
-// eslint-disable-next-line no-unused-vars
-function fix(editor: TextEditor): void;
-function fix(
-  workspaceOrEditor: Workspace | TextEditor,
-  maybeEditor?: TextEditor
-): void {
-  const editor = TextEditor.isTextEditor(workspaceOrEditor)
-    ? workspaceOrEditor
-    : maybeEditor!;
-  if (editor.document.isDirty) {
-    const listener = editor.onDidSave(() => {
-      listener.dispose();
-      innerFix();
-    });
-    editor.save();
-  } else {
-    innerFix();
-  }
-
-  function innerFix() {
-    if (!editor.document.path) {
-      nova.workspace.showErrorMessage("This document is missing a path.");
-      return;
-    }
-    console.log("Fixing", editor.document.path);
-    fixEslint(editor.document.path);
-  }
-}
-
-export function activate() {
-  console.log("activating...");
+async function asyncActivate() {
+  await initialize();
 
   const linter = new Linter();
+  compositeDisposable.add(linter);
+
+  // eslint-disable-next-line no-unused-vars
+  async function fix(workspace: Workspace, editor: TextEditor): Promise<void>;
+  // eslint-disable-next-line no-unused-vars
+  async function fix(editor: TextEditor): Promise<void>;
+  async function fix(
+    workspaceOrEditor: Workspace | TextEditor,
+    maybeEditor?: TextEditor
+  ): Promise<void> {
+    const editor = TextEditor.isTextEditor(workspaceOrEditor)
+      ? workspaceOrEditor
+      : maybeEditor!;
+
+    await linter.fixEditor(editor);
+    const p = editor.document.path;
+    // this might not be technically necessary, but will run a fix in an external process, which
+    // will help if linting hasn't processed before this is run
+    if (p) {
+      const d = editor.onDidSave(() => {
+        d.dispose();
+        linter.fixDocumentExternal(editor.document);
+      });
+      editor.save();
+    }
+  }
 
   compositeDisposable.add(
     nova.commands.register("apexskier.eslint.command.fix", fix)
@@ -49,6 +44,13 @@ export function activate() {
       "apexskier.eslint.command.suggestForCursor",
       createSuggestionCommandHandler(linter)
     )
+  );
+  compositeDisposable.add(
+    nova.commands.register("apexskier.eslint.command.lintAllEditors", () => {
+      nova.workspace.textEditors.forEach((editor) => {
+        linter.lintDocument(editor.document);
+      });
+    })
   );
 
   compositeDisposable.add(nova.workspace.onDidAddTextEditor(watchEditor));
@@ -75,18 +77,9 @@ export function activate() {
     const editorDisposable = new CompositeDisposable();
 
     editorDisposable.add(
-      editor.onWillSave((editor) => {
+      editor.onWillSave(async (editor) => {
         if (shouldFixOnSave()) {
-          const listener = editor.onDidSave((editor) => {
-            listener.dispose();
-            if (!editor.document.path) {
-              nova.workspace.showErrorMessage(
-                "This document is missing a path."
-              );
-              return;
-            }
-            nova.commands.invoke("apexskier.eslint.command.fix", editor);
-          });
+          await linter.fixEditor(editor);
         }
         linter.lintDocument(editor.document);
       })
@@ -113,8 +106,24 @@ export function activate() {
       document.onDidChangeSyntax((document) => linter.lintDocument(document))
     );
   }
+}
 
-  console.log("activated");
+export function activate() {
+  console.log("activating...");
+  if (nova.inDevMode()) {
+    const notification = new NotificationRequest("activated");
+    notification.body = "ESLint extension is loading";
+    nova.notifications.add(notification);
+  }
+  return asyncActivate()
+    .catch((err) => {
+      console.error("Failed to activate");
+      console.error(err);
+      nova.workspace.showErrorMessage(err);
+    })
+    .then(() => {
+      console.log("activated");
+    });
 }
 
 export function deactivate() {

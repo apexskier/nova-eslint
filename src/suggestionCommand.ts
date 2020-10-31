@@ -61,7 +61,8 @@ export function createSuggestionCommandHandler(linter: Linter) {
     } else {
       const { fix } = choice;
       editor.edit((edit) => {
-        edit.replace(new Range(fix.range[0], fix.range[1]), fix.text);
+        const [start, end] = fix.range;
+        edit.replace(new Range(start, end), fix.text);
       });
     }
   };

@@ -1,6 +1,6 @@
-import type { Linter as EslintLinter } from "eslint";
+import type { ESLint, Linter as ESLintLinter } from "eslint";
 import { eslintOutputToIssue } from "./eslintOutputToIssue";
-import { runEslint } from "./process";
+import { ESLintRunResults, runFixPass, runLintPass } from "./process";
 
 function positionToRange(
   document: TextDocument,
@@ -30,59 +30,91 @@ function positionToRange(
   return new Range(rangeStart, rangeEnd);
 }
 
-export class Linter {
+export class Linter implements Disposable {
   private _issues = new IssueCollection();
   // note - the order of this should match that of _issues
-  private _messages = new Map<
-    string,
-    ReadonlyArray<EslintLinter.LintMessage>
-  >();
+  private _results = new Map<string, ESLint.LintResult>();
   private _processesForPaths: { [path: string]: Disposable | undefined } = {};
 
-  lintDocument(document: TextDocument) {
-    if (!document.syntax) {
-      return;
-    }
-    const contentRange = new Range(0, document.length);
-    const content = document.getTextInRange(contentRange);
-
-    this.lintString(content, document.uri, document.syntax);
+  private createResultsHandler(document: TextDocument) {
+    return (output: Error | ESLintRunResults) => {
+      if (output instanceof Error) {
+        throw output;
+      }
+      delete this._processesForPaths[document.uri];
+      if (output.length !== 1) {
+        console.warn(JSON.stringify(output));
+        throw new Error("Unexpected results from linter");
+      }
+      const result = output[0];
+      this._results.set(document.uri, result);
+      this._issues.set(document.uri, result.messages.map(eslintOutputToIssue));
+    };
   }
 
-  private lintString(string: string, uri: string, syntax: string) {
-    const path = nova.path.normalize(uri);
-    this._processesForPaths[path]?.dispose();
-    this._processesForPaths[path] = runEslint(
-      string,
-      path,
-      syntax,
-      (messages) => {
-        delete this._processesForPaths[path];
-        this._messages.set(path, messages);
-        this._issues.set(path, messages.map(eslintOutputToIssue));
-      }
+  lintDocument(document: TextDocument) {
+    const contentRange = new Range(0, document.length);
+    const content = document.getTextInRange(contentRange);
+    this._processesForPaths[document.uri]?.dispose();
+    this._processesForPaths[document.uri] = runLintPass(
+      content,
+      document.isUntitled ? null : document.uri,
+      document.syntax,
+      this.createResultsHandler(document)
     );
+  }
+
+  fixDocumentExternal(document: TextDocument) {
+    this._processesForPaths[document.uri]?.dispose();
+    this._processesForPaths[document.uri] = runFixPass(
+      document.uri,
+      document.syntax,
+      this.createResultsHandler(document)
+    );
+  }
+
+  async fixEditor(editor: TextEditor) {
+    const [messages, issues] = this._getAllMessages(editor.document);
+    const newIssues: Array<Issue> = [];
+    await editor.edit((edit) => {
+      messages
+        .slice()
+        .reverse()
+        .forEach((message, i) => {
+          if (message.fix) {
+            const [start, end] = message.fix.range;
+            const range = new Range(start, end);
+            edit.replace(range, message.fix.text);
+          } else {
+            newIssues.push(issues[i]);
+          }
+        });
+    });
+    this._issues.set(editor.document.uri, newIssues);
   }
 
   removeIssues(uri: string) {
     const path = nova.path.normalize(uri);
-    this._messages.delete(path);
+    this._results.delete(path);
     this._issues.remove(path);
   }
 
-  getAllMessages(editor: TextEditor) {
-    const path = nova.path.normalize(editor.document.uri);
-    return this._messages.get(path) ?? [];
-  }
-
-  getMessageAtSelection(editor: TextEditor) {
-    const path = nova.path.normalize(editor.document.uri);
-    const messages = this._messages.get(path) ?? [];
-    const issues = this._issues.get(path);
-    if (messages.length != issues.length) {
+  private _getAllMessages(
+    document: TextDocument
+  ): [ReadonlyArray<ESLintLinter.LintMessage>, ReadonlyArray<Issue>] {
+    const result = this._results.get(document.uri);
+    const issues = this._issues.get(document.uri);
+    if (!result || result.messages.length != issues.length) {
       throw new Error("inconsistent data in Linter");
     }
-    const message = messages.find((_, i) => {
+    return [result.messages, issues];
+  }
+
+  getMessageAtSelection(
+    editor: TextEditor
+  ): ESLintLinter.LintMessage | undefined {
+    const [messages, issues] = this._getAllMessages(editor.document);
+    return messages.find((_, i) => {
       // annoyingly, nova doesn't provide a getter for this if col/line is set
       // const issueRange = issues[i].textRange!;
       const issue = issues[i];
@@ -100,6 +132,11 @@ export class Linter {
           issueRange.containsIndex(editor.selectedRange.start))
       );
     });
-    return message;
+  }
+
+  dispose() {
+    for (const p in this._processesForPaths) {
+      this._processesForPaths[p]?.dispose();
+    }
   }
 }
