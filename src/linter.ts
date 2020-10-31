@@ -39,7 +39,8 @@ export class Linter implements Disposable {
   private createResultsHandler(document: TextDocument) {
     return (output: Error | ESLintRunResults) => {
       if (output instanceof Error) {
-        throw output;
+        console.warn(output.message);
+        return;
       }
       delete this._processesForPaths[document.uri];
       if (output.length !== 1) {

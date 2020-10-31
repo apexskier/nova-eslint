@@ -88,7 +88,7 @@ function verifyRequiredPlugin(
   syntax: string | null,
   path: string | null,
   // eslint-disable-next-line no-unused-vars
-  callback: (err?: Error) => void
+  callback: (message?: string) => void
 ): Disposable {
   // if a plugin is required to parse this syntax we need to verify it's been found for this file
   // check in the config for this file
@@ -97,9 +97,7 @@ function verifyRequiredPlugin(
     return getConfig(eslint, path, (config) => {
       if (!config.plugins?.includes(requiredPlugin)) {
         callback(
-          new Error(
-            `${syntax} requires installing eslint-plugin-${requiredPlugin}`
-          )
+          `${syntax} requires installing eslint-plugin-${requiredPlugin}`
         );
       } else {
         callback();
@@ -118,7 +116,7 @@ class ESLintProcess implements Disposable {
     eslint: string,
     args: string[],
     // eslint-disable-next-line no-unused-vars
-    callback: (output: Error | ESLintRunResults) => void
+    callback: (output: ESLintRunResults) => void
   ) {
     this._process = new Process(eslint, {
       args,
@@ -137,7 +135,7 @@ class ESLintProcess implements Disposable {
       const noLintErrors = status === 0;
       if (!areLintErrors && !noLintErrors && !lintProcessWasTerminated) {
         console.warn(stderr);
-        callback(new Error(`failed to lint (${status})`));
+        throw new Error(`failed to lint (${status})`);
       }
       if (lintProcessWasTerminated) {
         return;
@@ -168,7 +166,7 @@ export function runLintPass(
   path: string | null,
   syntax: string | null,
   // eslint-disable-next-line no-unused-vars
-  callback: (err: Error | ESLintRunResults) => void
+  callback: (output: ESLintRunResults) => void
 ): Disposable {
   const disposable = new CompositeDisposable();
   if (!nova.workspace.path) {
@@ -188,9 +186,9 @@ export function runLintPass(
     : null;
 
   disposable.add(
-    verifyRequiredPlugin(eslint, syntax, cleanPath, (err) => {
-      if (err) {
-        callback(err);
+    verifyRequiredPlugin(eslint, syntax, cleanPath, (message) => {
+      if (message) {
+        console.info(message);
       } else {
         const args = ["--format=json", "--stdin"];
         if (cleanPath) {
@@ -213,7 +211,7 @@ export function runFixPass(
   path: string,
   syntax: string | null,
   // eslint-disable-next-line no-unused-vars
-  callback: (err: Error | ESLintRunResults) => void
+  callback: (output: ESLintRunResults) => void
 ) {
   const disposable = new CompositeDisposable();
   if (!nova.workspace.path) {
@@ -231,9 +229,9 @@ export function runFixPass(
   const cleanPath = "/" + decodeURI(path).split("/").slice(5).join("/");
 
   disposable.add(
-    verifyRequiredPlugin(eslint, syntax, cleanPath, (err) => {
-      if (err) {
-        callback(err);
+    verifyRequiredPlugin(eslint, syntax, cleanPath, (message) => {
+      if (message) {
+        console.info(message);
       } else {
         const args = ["--fix", "--format=json"];
         args.unshift(cleanPath);
