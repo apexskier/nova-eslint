@@ -30,7 +30,7 @@ function positionToRange(
   return new Range(rangeStart, rangeEnd);
 }
 
-// adjusts a range to account for changed text
+// returns a new range to account for changed text
 // or null if it can't be adjusted because it overlaps with the replacement
 function adjustRange(
   toAdjust: Range,
