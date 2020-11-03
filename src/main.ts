@@ -24,16 +24,6 @@ async function asyncActivate() {
       : maybeEditor!;
 
     await linter.fixEditor(editor);
-    const p = editor.document.path;
-    // this might not be technically necessary, but will run a fix in an external process, which
-    // will help if linting hasn't processed before this is run
-    if (p) {
-      const d = editor.onDidSave(() => {
-        d.dispose();
-        linter.fixDocumentExternal(editor.document);
-      });
-      editor.save();
-    }
   }
 
   compositeDisposable.add(
@@ -83,6 +73,9 @@ async function asyncActivate() {
         }
         linter.lintDocument(editor.document);
       })
+    );
+    editorDisposable.add(
+      editor.onDidChange((editor) => linter.dirtyDocument(editor.document))
     );
     editorDisposable.add(
       editor.onDidStopChanging((editor) => linter.lintDocument(editor.document))

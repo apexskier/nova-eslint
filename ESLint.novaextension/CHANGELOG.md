@@ -1,5 +1,11 @@
 # Changelog
 
+## future
+
+### Fixed
+
+- Fix cases where fix on save would produce broken code
+
 ## v1.5.0
 
 ### Added
