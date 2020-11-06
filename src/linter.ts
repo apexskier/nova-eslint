@@ -30,6 +30,30 @@ function positionToRange(
   return new Range(rangeStart, rangeEnd);
 }
 
+// returns a new range to account for changed text
+// or null if it can't be adjusted because it overlaps with the replacement
+function adjustRange(
+  toAdjust: Range,
+  replacedRange: Range,
+  replacedText: string
+): Range | null {
+  if (toAdjust.end <= replacedRange.start) {
+    return toAdjust;
+  }
+  if (toAdjust.start >= replacedRange.end) {
+    const characterDiff = replacedText.length - replacedRange.length;
+    return new Range(
+      toAdjust.start + characterDiff,
+      toAdjust.end + characterDiff
+    );
+  }
+  return null;
+}
+
+function compareByRange(a: { range: Range }, b: { range: Range }) {
+  return a.range.compare(b.range);
+}
+
 export class Linter implements Disposable {
   private _issues = new IssueCollection();
   // note - the order of this should match that of _issues
@@ -64,6 +88,10 @@ export class Linter implements Disposable {
       this.createResultsHandler(document)
     );
   }
+  
+  dirtyDocument(document: TextDocument) {
+    this._results.delete(document.uri);
+  }
 
   fixDocumentExternal(document: TextDocument) {
     this._processesForPaths[document.uri]?.dispose();
@@ -76,22 +104,56 @@ export class Linter implements Disposable {
 
   async fixEditor(editor: TextEditor) {
     const [messages, issues] = this._getAllMessages(editor.document.uri);
-    const newIssues: Array<Issue> = [];
+    const remainingIssues: Array<Issue> = [];
     await editor.edit((edit) => {
-      messages
-        .slice()
-        .reverse()
-        .forEach((message, i) => {
-          if (message.fix) {
-            const [start, end] = message.fix.range;
-            const range = new Range(start, end);
-            edit.replace(range, message.fix.text);
-          } else {
-            newIssues.push(issues[i]);
-          }
-        });
+      let thingsToFix: Array<{
+        range: Range;
+        text: string;
+        i: number;
+      }> = [];
+      messages.forEach((message, i) => {
+        if (message.fix) {
+          const {
+            range: [start, end],
+            text,
+          } = message.fix;
+          const range = new Range(start, end);
+          thingsToFix.push({ range, text, i });
+        } else {
+          remainingIssues.push(issues[i]);
+        }
+      });
+      thingsToFix.sort(compareByRange);
+      while (thingsToFix.length) {
+        const { range, text } = thingsToFix.shift()!;
+        edit.replace(range, text);
+        // adjust all other fix ranges, dropping those that aren't compatible
+        thingsToFix = thingsToFix.reduce<typeof thingsToFix>(
+          (newThingsToFix, thingToFix) => {
+            const newRange = adjustRange(thingToFix.range, range, text);
+            if (newRange) {
+              return [...newThingsToFix, { ...thingToFix, range: newRange }];
+            } else {
+              remainingIssues.push(issues[thingToFix.i]);
+              return newThingsToFix;
+            }
+          },
+          []
+        );
+      }
     });
-    this._issues.set(editor.document.uri, newIssues);
+    this._issues.set(editor.document.uri, remainingIssues);
+    
+    const p = editor.document.path;
+    // This will handle the case where a document was dirty or not all fixes could be automatically applied
+    // there's an edge case where where someone saves and immediately starts typing. This could produce a conflict on disk vs in memory
+    if (p) {
+      const d = editor.onDidSave(() => {
+        d.dispose();
+        this.fixDocumentExternal(editor.document);
+      });
+      editor.save();
+    }
   }
 
   removeIssues(uri: string) {
@@ -105,7 +167,11 @@ export class Linter implements Disposable {
   ): [ReadonlyArray<ESLintLinter.LintMessage>, ReadonlyArray<Issue>] {
     const result = this._results.get(uri);
     const issues = this._issues.get(uri);
-    if (!result || result.messages.length != issues.length) {
+    if (!result) {
+      // indicates the document is dirty since the last results refresh. Disallow interaction
+      return [[], []];
+    }
+    if (result.messages.length != issues.length) {
       throw new Error("inconsistent data in Linter");
     }
     return [result.messages, issues];
