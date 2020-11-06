@@ -146,6 +146,7 @@ export class Linter implements Disposable {
     
     const p = editor.document.path;
     // This will handle the case where a document was dirty or not all fixes could be automatically applied
+    // there's an edge case where where someone saves and immediately starts typing. This could produce a conflict on disk vs in memory
     if (p) {
       const d = editor.onDidSave(() => {
         d.dispose();
