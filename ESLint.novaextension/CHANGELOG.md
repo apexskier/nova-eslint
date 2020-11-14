@@ -1,5 +1,11 @@
 # Changelog
 
+## future
+
+### Changed
+
+- Add more info when mismatched document length error happens
+
 ## v1.5.1
 
 ### Fixed
