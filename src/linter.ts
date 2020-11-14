@@ -79,7 +79,20 @@ export class Linter implements Disposable {
 
   lintDocument(document: TextDocument) {
     const contentRange = new Range(0, document.length);
-    const content = document.getTextInRange(contentRange);
+    let content: string;
+    try {
+      content = document.getTextInRange(contentRange);
+    } catch (err) {
+      if (
+        (err as Error).message.includes(
+          "Range exceeds bounds of the document's text"
+        )
+      ) {
+        console.warn(err);
+        console.warn("document length:", document.length);
+      }
+      throw err;
+    }
     this._processesForPaths[document.uri]?.dispose();
     this._processesForPaths[document.uri] = runLintPass(
       content,
@@ -88,7 +101,7 @@ export class Linter implements Disposable {
       this.createResultsHandler(document)
     );
   }
-  
+
   dirtyDocument(document: TextDocument) {
     this._results.delete(document.uri);
   }
@@ -143,7 +156,7 @@ export class Linter implements Disposable {
       }
     });
     this._issues.set(editor.document.uri, remainingIssues);
-    
+
     const p = editor.document.path;
     // This will handle the case where a document was dirty or not all fixes could be automatically applied
     // there's an edge case where where someone saves and immediately starts typing. This could produce a conflict on disk vs in memory
