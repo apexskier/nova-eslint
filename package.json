@@ -24,7 +24,7 @@
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
-    "@rollup/plugin-node-resolve": "^10.0.0",
+    "@rollup/plugin-node-resolve": "^11.0.1",
     "@types/eslint": "^7.2.6",
     "@types/nova-editor-node": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^4.10.0",
