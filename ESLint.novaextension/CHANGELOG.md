@@ -1,5 +1,11 @@
 # Changelog
 
+## future
+
+### Added
+
+- Support custom rules directories
+
 ## v1.5.2
 
 ### Changed
