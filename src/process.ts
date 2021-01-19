@@ -1,9 +1,13 @@
 import type { Linter, ESLint } from "eslint";
 import { getEslintPath } from "./getEslintPath";
 import { getEslintConfig } from "./getEslintConfig";
+import { getRulesDirs } from "./getRulesDirs";
 
 let eslintPath: string | null = null;
 let eslintConfigPath: string | null = null;
+let eslintRulesDirs: Array<string> | null = null;
+
+// TODO: Clean up these disposables on deactivation
 nova.config.onDidChange("apexskier.eslint.config.eslintPath", async () => {
   eslintPath = await getEslintPath();
   console.log("Updating ESLint executable globally", eslintPath);
@@ -30,10 +34,24 @@ nova.workspace.config.onDidChange(
     nova.commands.invoke("apexskier.eslint.config.lintAllEditors");
   }
 );
+nova.config.onDidChange("apexskier.eslint.config.eslintRulesDirs", () => {
+  eslintRulesDirs = getRulesDirs();
+  console.log("Updating ESLint rules globally");
+  nova.commands.invoke("apexskier.eslint.config.lintAllEditors");
+});
+nova.workspace.config.onDidChange(
+  "apexskier.eslint.config.eslintRulesDirs",
+  () => {
+    eslintRulesDirs = getRulesDirs();
+    console.log("Updating ESLint rules for workspace");
+    nova.commands.invoke("apexskier.eslint.config.lintAllEditors");
+  }
+);
 
 export async function initialize() {
   eslintPath = await getEslintPath();
   eslintConfigPath = getEslintConfig();
+  eslintRulesDirs = getRulesDirs();
 }
 
 const syntaxToRequiredPlugin: { [syntax: string]: string | undefined } = {
@@ -161,6 +179,17 @@ class ESLintProcess implements Disposable {
   }
 }
 
+function addConfigArguments(toArgs: Array<string>) {
+  if (eslintRulesDirs) {
+    for (const dir of eslintRulesDirs) {
+      toArgs.unshift("--rulesdir", dir);
+    }
+  }
+  if (eslintConfigPath) {
+    toArgs.unshift("--config", eslintConfigPath);
+  }
+}
+
 export function runLintPass(
   content: string,
   path: string | null,
@@ -179,7 +208,6 @@ export function runLintPass(
     return disposable;
   }
   const eslint = eslintPath;
-  const eslintConfig = eslintConfigPath;
   // remove file:/Volumes/Macintosh HD from uri
   const cleanPath = path
     ? "/" + decodeURI(path).split("/").slice(5).join("/")
@@ -194,9 +222,7 @@ export function runLintPass(
         if (cleanPath) {
           args.unshift("--stdin-filename", cleanPath);
         }
-        if (eslintConfig) {
-          args.unshift("--config", eslintConfig);
-        }
+        addConfigArguments(args);
         const process = new ESLintProcess(eslint, args, callback);
         disposable.add(process);
         process.write(content);
@@ -224,7 +250,6 @@ export function runFixPass(
     return disposable;
   }
   const eslint = eslintPath;
-  const eslintConfig = eslintConfigPath;
   // remove file:/Volumes/Macintosh HD from uri
   const cleanPath = "/" + decodeURI(path).split("/").slice(5).join("/");
 
@@ -235,9 +260,7 @@ export function runFixPass(
       } else {
         const args = ["--fix", "--format=json"];
         args.unshift(cleanPath);
-        if (eslintConfig) {
-          args.unshift("--config", eslintConfig);
-        }
+        addConfigArguments(args);
         const process = new ESLintProcess(eslint, args, callback);
         disposable.add(process);
       }

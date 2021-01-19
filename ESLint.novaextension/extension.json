@@ -34,13 +34,21 @@
     },
     {
       "key": "apexskier.eslint.config.eslintPath",
-      "title": "Path to ESLint executable",
+      "title": "ESLint executable",
       "type": "path"
     },
     {
       "key": "apexskier.eslint.config.eslintConfigPath",
-      "title": "Path to ESLint configuration",
+      "title": "ESLint configuration",
       "type": "path"
+    },
+    {
+      "key": "apexskier.eslint.config.eslintRulesDirs",
+      "title": "Rules directories",
+      "link": "https://eslint.org/docs/user-guide/command-line-interface#-rulesdir",
+      "type": "pathArray",
+      "allowFiles": false,
+      "allowFolders": true
     }
   ],
 
@@ -54,13 +62,22 @@
     },
     {
       "key": "apexskier.eslint.config.eslintPath",
-      "title": "Path to ESLint executable",
+      "title": "ESLint executable",
       "type": "path"
     },
     {
       "key": "apexskier.eslint.config.eslintConfigPath",
-      "title": "Path to ESLint configuration",
+      "title": "ESLint configuration",
       "type": "path"
+    },
+    {
+      "key": "apexskier.eslint.config.eslintRulesDirs",
+      "title": "Rules directories",
+      "link": "https://eslint.org/docs/user-guide/command-line-interface#-rulesdir",
+      "type": "pathArray",
+      "relative": true,
+      "allowFiles": false,
+      "allowFolders": true
     }
   ],
 
