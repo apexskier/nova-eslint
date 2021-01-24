@@ -1,5 +1,11 @@
 # Changelog
 
+## future
+
+### Added
+
+- Support [@html-eslint](https://yeonjuan.github.io/html-eslint/docs/getting-started.html)
+
 ## v1.5.2
 
 ### Changed
