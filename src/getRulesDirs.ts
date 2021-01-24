@@ -24,5 +24,12 @@ export function getRulesDirs(): Array<string> | null {
     }
   }
 
-  return rulesDirs.filter((d) => d.trim());
+  return (
+    rulesDirs
+      .filter((d) => d.trim())
+      // hack - JSON stringifying works around https://github.com/eslint/eslint/issues/14025 by forcing levn to parse as a string, not a regex
+      // I could try to strip the `/Volumes/Macintosh HD` from Nova's workspace dir, but that would have to be
+      // conditional, since global settings won't include it. This feels simpler, although it could break if eslint's options parsing changes
+      .map((d) => JSON.stringify(d))
+  );
 }
