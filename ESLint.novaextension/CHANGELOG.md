@@ -1,10 +1,14 @@
 # Changelog
 
-## future
+## v1.6.0
 
 ### Added
 
 - Support [@html-eslint](https://yeonjuan.github.io/html-eslint/docs/getting-started.html)
+
+### Changed
+
+- Default paths in workspace preferences to relative paths
 
 ## v1.5.2
 
