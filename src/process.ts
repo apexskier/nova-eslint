@@ -54,10 +54,12 @@ export async function initialize() {
   eslintRulesDirs = getRulesDirs();
 }
 
-const syntaxToRequiredPlugin: { [syntax: string]: string | undefined } = {
-  html: "html",
-  vue: "vue",
-  markdown: "markdown",
+const syntaxToSupportingPlugins: {
+  [syntax: string]: ReadonlyArray<string> | undefined;
+} = {
+  html: ["html", "@html-eslint"],
+  vue: ["vue"],
+  markdown: ["markdown"],
 };
 
 export type ESLintRunResults = ReadonlyArray<ESLint.LintResult>;
@@ -101,7 +103,7 @@ function getConfig(
   };
 }
 
-function verifyRequiredPlugin(
+function verifySupportingPlugin(
   eslint: string,
   syntax: string | null,
   path: string | null,
@@ -110,12 +112,16 @@ function verifyRequiredPlugin(
 ): Disposable {
   // if a plugin is required to parse this syntax we need to verify it's been found for this file
   // check in the config for this file
-  const requiredPlugin = syntax && syntaxToRequiredPlugin[syntax];
-  if (requiredPlugin && path) {
+  const supportingPlugins = syntax && syntaxToSupportingPlugins[syntax];
+  if (supportingPlugins && path) {
     return getConfig(eslint, path, (config) => {
-      if (!config.plugins?.includes(requiredPlugin)) {
+      if (
+        !config.plugins?.some((plugin) => supportingPlugins.includes(plugin))
+      ) {
         callback(
-          `${syntax} requires installing eslint-plugin-${requiredPlugin}`
+          `${syntax} requires installing one of the following plugins: ${supportingPlugins
+            .map((p) => `eslint-plugin-${p}`)
+            .join(", ")}`
         );
       } else {
         callback();
@@ -214,7 +220,7 @@ export function runLintPass(
     : null;
 
   disposable.add(
-    verifyRequiredPlugin(eslint, syntax, cleanPath, (message) => {
+    verifySupportingPlugin(eslint, syntax, cleanPath, (message) => {
       if (message) {
         console.info(message);
       } else {
@@ -254,7 +260,7 @@ export function runFixPass(
   const cleanPath = "/" + decodeURI(path).split("/").slice(5).join("/");
 
   disposable.add(
-    verifyRequiredPlugin(eslint, syntax, cleanPath, (message) => {
+    verifySupportingPlugin(eslint, syntax, cleanPath, (message) => {
       if (message) {
         console.info(message);
       } else {

@@ -3,7 +3,7 @@
   "name": "ESLint",
   "organization": "Cameron Little",
   "description": "Lint your code with ESLint.",
-  "version": "1.5.2",
+  "version": "1.6.0",
   "categories": ["issues", "formatters", "commands"],
   "homepage": "https://github.com/apexskier/nova-eslint#readme",
   "repository": "https://github.com/apexskier/nova-eslint",
@@ -63,12 +63,14 @@
     {
       "key": "apexskier.eslint.config.eslintPath",
       "title": "ESLint executable",
-      "type": "path"
+      "type": "path",
+      "relative": true
     },
     {
       "key": "apexskier.eslint.config.eslintConfigPath",
       "title": "ESLint configuration",
-      "type": "path"
+      "type": "path",
+      "relative": true
     },
     {
       "key": "apexskier.eslint.config.eslintRulesDirs",
