@@ -158,12 +158,12 @@ class ESLintProcess implements Disposable {
       const areLintErrors = status === 1;
       const noLintErrors = status === 0;
       if (!areLintErrors && !noLintErrors && !lintProcessWasTerminated) {
-        console.warn("Failed to lint")
-        console.group()
-        console.warn("stderr: ", stderr)
-        console.log("command: ", this._process.command)
+        console.warn("Failed to lint");
+        console.group();
+        console.warn("stderr: ", stderr);
+        console.log("command: ", this._process.command);
         console.log("args: ", ...(this._process.args ?? []));
-        console.groupEnd()
+        console.groupEnd();
         throw new Error(`failed to lint (${status})`);
       }
       if (lintProcessWasTerminated) {
