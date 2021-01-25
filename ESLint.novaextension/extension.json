@@ -69,6 +69,7 @@
     {
       "key": "apexskier.eslint.config.eslintConfigPath",
       "title": "ESLint configuration",
+      "link": "https://eslint.org/docs/user-guide/configuring#configuration-file-formats",
       "type": "path",
       "relative": true
     },
