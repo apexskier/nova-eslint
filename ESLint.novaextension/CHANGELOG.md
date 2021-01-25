@@ -1,5 +1,15 @@
 # Changelog
 
+## future
+
+### Added
+
+- Support custom rules directories
+
+### Changed
+
+- Improved Preferences meta-info
+
 ## v1.6.0
 
 ### Added
