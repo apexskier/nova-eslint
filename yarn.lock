@@ -631,10 +631,10 @@ eslint-plugin-markdown@^2.0.0-rc.1:
     remark-parse "^5.0.0"
     unified "^6.1.2"
 
-eslint-plugin-nova@^1.4.0:
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-nova/-/eslint-plugin-nova-1.4.0.tgz#1b7291c73ff5bcacd7dd46078a21685f4ed73658"
-  integrity sha512-rsYFt2b25hG6aOMYvOcDBKsXK8WlGJgjMwwaXRKsHS5nm0GEb6QHMKNp/SVKfKf4ZcS+JTrzUzFKAjHEOUTBdA==
+eslint-plugin-nova@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-nova/-/eslint-plugin-nova-1.5.0.tgz#1de498f9acfed8382051198f774cf43afd0f2692"
+  integrity sha512-pb/ApNrUz+CW+8KFgO7i8uRFByCbYJJPyWB4TszzUjZAJ12aX+Y+abJaUHn3sFPTXJOwO+bx9lUnxL9t5FKsKQ==
 
 eslint-plugin-vue@^7.6.0:
   version "7.6.0"
