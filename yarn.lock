@@ -600,10 +600,10 @@ eslint-plugin-html@^6.1.2:
   dependencies:
     htmlparser2 "^6.0.1"
 
-eslint-plugin-markdown@^2.0.0-rc.1:
-  version "2.0.0-rc.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-markdown/-/eslint-plugin-markdown-2.0.0-rc.1.tgz#14d25ba567eb3cd0022f4795274f886932a22460"
-  integrity sha512-nR3yM8M7v6vWn1MJ3DCrmU1A2oqRCautjSuCUwev6CiqinUSM8nDP05yeQA6SUIMnP4FjedJpTkhcyyFHkA0/A==
+eslint-plugin-markdown@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-markdown/-/eslint-plugin-markdown-2.0.0.tgz#cd650beda2b599cd9e4535ea369266b5d0e49d23"
+  integrity sha512-zt10JoexHeJFMTE5egDcetAJ34bn5k/92s0wAuRZfhDAyI0ryEj+O91JL2CbBExajie6BE5L63y47dN1Sbp6mQ==
   dependencies:
     remark-parse "^5.0.0"
     unified "^6.1.2"
