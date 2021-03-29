@@ -46,5 +46,7 @@
     "typescript": "^4.2.3"
   },
   "private": true,
-  "dependencies": {}
+  "resolutions": {
+    "tslib": "^2.1.0"
+  }
 }
