@@ -27,7 +27,7 @@
     "@html-eslint/parser": "^0.9.0",
     "@rollup/plugin-commonjs": "^18.0.0",
     "@rollup/plugin-node-resolve": "^11.2.1",
-    "@types/eslint": "^7.2.11",
+    "@types/eslint": "^7.2.12",
     "@types/nova-editor-node": "^4.1.2",
     "@typescript-eslint/eslint-plugin": "^4.26.0",
     "@typescript-eslint/parser": "^4.24.0",
