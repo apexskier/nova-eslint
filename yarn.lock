@@ -64,10 +64,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@html-eslint/eslint-plugin@^0.8.0":
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/@html-eslint/eslint-plugin/-/eslint-plugin-0.8.0.tgz#2e07b5d65d1e3f4ffc4ee267e6af92529e8503ce"
-  integrity sha512-Lioj8uZ2Nq8zfarAXRDktHGFBua9MHkcur/axu4NaS+8P/uFzWH4uyWtZOI72kUw+ox8d/bcwiPikgv59GXSTQ==
+"@html-eslint/eslint-plugin@^0.10.1":
+  version "0.10.1"
+  resolved "https://registry.yarnpkg.com/@html-eslint/eslint-plugin/-/eslint-plugin-0.10.1.tgz#b53055cd2cf6aa741c3110c01aef48d11374538e"
+  integrity sha512-CSB/ET6CUIyOzc7xc8RGzON4p98N0fQBBksajSexHyRqDn4Dsj/p+sucgX1oQ3e5zerP3HWYoCBsqtf9V7EDug==
 
 "@html-eslint/parser@^0.9.0":
   version "0.9.0"
