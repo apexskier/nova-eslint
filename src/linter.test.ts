@@ -51,14 +51,14 @@ describe("Linter", () => {
 
     const linter = new Linter() as Linter;
 
-    const mockTextDocument: TextDocument = ({
+    const mockTextDocument: TextDocument = {
       uri: "mock://mockdocument1",
       getTextInRange() {
         return "";
       },
       syntax: Symbol("syntax"),
       eol: "\n",
-    } as unknown) as TextDocument;
+    } as unknown as TextDocument;
 
     linter.lintDocument(mockTextDocument);
 
@@ -117,12 +117,13 @@ describe("Linter", () => {
       },
     ]);
 
-    const mockEditor: TextEditor = ({
+    const mockEditor: TextEditor = {
       document: mockTextDocument,
       selectedRange: new Range(4, 5),
-    } as unknown) as TextEditor;
-    (mockEditor.selectedRange
-      .intersectsRange as any) = jest.fn().mockImplementationOnce(() => true);
+    } as unknown as TextEditor;
+    (mockEditor.selectedRange.intersectsRange as any) = jest
+      .fn()
+      .mockImplementationOnce(() => true);
     const messages = linter.interactWithMessagesAtSelection(mockEditor);
 
     expect(issueCollection.get).toBeCalledTimes(1);
@@ -169,9 +170,9 @@ describe("Linter", () => {
     const issueCollection = (IssueCollection as jest.Mock<IssueCollection>).mock
       .results[0].value as IssueCollection;
 
-    const mockTextDocument: TextDocument = ({
+    const mockTextDocument: TextDocument = {
       uri: "mock://mockdocument2",
-    } as unknown) as TextDocument;
+    } as unknown as TextDocument;
 
     linter.removeIssues(mockTextDocument.uri);
 
@@ -185,7 +186,7 @@ describe("Linter", () => {
 
     const linter = new Linter() as Linter;
 
-    const mockTextDocument: TextDocument = ({
+    const mockTextDocument: TextDocument = {
       uri: "mock://mockdocument3",
       getTextInRange() {
         return "";
@@ -193,7 +194,7 @@ describe("Linter", () => {
       syntax: Symbol("syntax"),
       eol: "\n",
       path: "/path/to/mock",
-    } as unknown) as TextDocument;
+    } as unknown as TextDocument;
 
     linter.lintDocument(mockTextDocument);
     const resultsHandler = (runLintPass as jest.Mock).mock.calls[0][3];
@@ -243,7 +244,7 @@ describe("Linter", () => {
 
     let resolveEdit: () => void = () => {};
     const onDidSaveDispose = jest.fn();
-    const mockEditor: TextEditor = ({
+    const mockEditor: TextEditor = {
       document: mockTextDocument,
       edit: jest.fn(
         () =>
@@ -253,7 +254,7 @@ describe("Linter", () => {
       ),
       onDidSave: jest.fn(() => ({ dispose: onDidSaveDispose })),
       save: jest.fn(),
-    } as unknown) as TextEditor;
+    } as unknown as TextEditor;
 
     const fixPromise = linter.fixEditor(mockEditor);
 
