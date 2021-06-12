@@ -3,7 +3,7 @@ import { eslintOutputToIssue } from "./eslintOutputToIssue";
 
 (global as any).IssueSeverity = {
   Info: "info",
-  Warn: "warn",
+  Warning: "warning",
   Error: "error",
 };
 

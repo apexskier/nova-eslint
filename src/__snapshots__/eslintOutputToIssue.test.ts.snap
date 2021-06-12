@@ -23,7 +23,7 @@ MockIssue {
   "endLine": 4,
   "line": 2,
   "message": "message",
-  "severity": undefined,
+  "severity": "warning",
   "source": "ESLint",
 }
 `;
