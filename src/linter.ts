@@ -106,7 +106,7 @@ export class Linter implements Disposable {
     this._results.delete(document.uri);
   }
 
-  fixDocumentExternal(document: TextDocument) {
+  private _fixDocumentExternal(document: TextDocument) {
     this._processesForPaths[document.uri]?.dispose();
     this._processesForPaths[document.uri] = runFixPass(
       document.uri,
@@ -163,7 +163,7 @@ export class Linter implements Disposable {
     if (p) {
       const d = editor.onDidSave(() => {
         d.dispose();
-        this.fixDocumentExternal(editor.document);
+        this._fixDocumentExternal(editor.document);
       });
       editor.save();
     }

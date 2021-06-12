@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`eslintOutputToIssue severity 0 1`] = `
+MockIssue {
+  "args": Array [],
+  "code": "rule_id",
+  "column": 1,
+  "endColumn": 3,
+  "endLine": 4,
+  "line": 2,
+  "message": "message",
+  "severity": "info",
+  "source": "ESLint",
+}
+`;
+
+exports[`eslintOutputToIssue severity 1 1`] = `
+MockIssue {
+  "args": Array [],
+  "code": "rule_id",
+  "column": 1,
+  "endColumn": 3,
+  "endLine": 4,
+  "line": 2,
+  "message": "message",
+  "severity": "warning",
+  "source": "ESLint",
+}
+`;
+
+exports[`eslintOutputToIssue severity 2 1`] = `
+MockIssue {
+  "args": Array [],
+  "code": "rule_id",
+  "column": 1,
+  "endColumn": 3,
+  "endLine": 4,
+  "line": 2,
+  "message": "message",
+  "severity": "error",
+  "source": "ESLint",
+}
+`;
