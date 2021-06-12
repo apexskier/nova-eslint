@@ -17,6 +17,8 @@ jobs:
 
       - name: Setup Node.js environment
         uses: actions/setup-node@v1
+        with:
+          node-version: "15"
 
       - name: Install dependencies
         run: yarn
@@ -26,7 +28,11 @@ jobs:
 
       - name: Build
         run: yarn build
-#
-#     - name: Test
-#       run: yarn test
 
+      - name: Test
+        run: yarn test
+
+      - name: Ensure clean
+        run: |
+          git status --porcelain
+          test -z "$(git status --porcelain)"
