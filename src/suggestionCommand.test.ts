@@ -52,7 +52,7 @@ describe("suggestion command", () => {
   };
 
   const command = createSuggestionCommandHandler(
-    (mockLinter as unknown) as Linter
+    mockLinter as unknown as Linter
   );
 
   beforeEach(() => {
@@ -79,7 +79,7 @@ describe("suggestion command", () => {
       edit: jest.fn(async () => {}),
     };
 
-    const promise = command((mockEditor as unknown) as TextEditor);
+    const promise = command(mockEditor as unknown as TextEditor);
 
     expect(nova.workspace.showChoicePalette).toBeCalledTimes(1);
     expect(nova.workspace.showChoicePalette).toHaveBeenNthCalledWith(
@@ -132,7 +132,7 @@ describe("suggestion command", () => {
       edit: jest.fn(async () => {}),
     };
 
-    await command((mockEditor as unknown) as TextEditor);
+    await command(mockEditor as unknown as TextEditor);
 
     expect(nova.commands.invoke).toBeCalledTimes(1);
     expect(nova.commands.invoke).toHaveBeenNthCalledWith(
@@ -164,7 +164,7 @@ describe("suggestion command", () => {
       edit: jest.fn(async () => {}),
     };
 
-    await command((mockEditor as unknown) as TextEditor);
+    await command(mockEditor as unknown as TextEditor);
 
     expect(nova.commands.invoke).toBeCalledTimes(0);
 
@@ -198,7 +198,7 @@ text in range`
       edit: jest.fn(async () => {}),
     };
 
-    await command((mockEditor as unknown) as TextEditor);
+    await command(mockEditor as unknown as TextEditor);
 
     expect(nova.commands.invoke).toBeCalledTimes(0);
 
