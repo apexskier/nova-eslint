@@ -340,10 +340,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@html-eslint/eslint-plugin@^0.10.1":
-  version "0.10.1"
-  resolved "https://registry.yarnpkg.com/@html-eslint/eslint-plugin/-/eslint-plugin-0.10.1.tgz#b53055cd2cf6aa741c3110c01aef48d11374538e"
-  integrity sha512-CSB/ET6CUIyOzc7xc8RGzON4p98N0fQBBksajSexHyRqDn4Dsj/p+sucgX1oQ3e5zerP3HWYoCBsqtf9V7EDug==
+"@html-eslint/eslint-plugin@^0.11.0":
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/@html-eslint/eslint-plugin/-/eslint-plugin-0.11.0.tgz#40d321505a054ae5427ad498cbf982a05e753645"
+  integrity sha512-64vU1+BLaU12nSJdhkKv7WCdFgh/7aw0JciaovrkIPXcTVKWQlrM9ZRP9JEVRXS+UPhqNUkhR/CRdJdm8A2ITw==
 
 "@html-eslint/parser@^0.11.0":
   version "0.11.0"
