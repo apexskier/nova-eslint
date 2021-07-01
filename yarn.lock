@@ -1561,10 +1561,10 @@ eslint-plugin-nova@^1.5.0:
   resolved "https://registry.yarnpkg.com/eslint-plugin-nova/-/eslint-plugin-nova-1.5.0.tgz#1de498f9acfed8382051198f774cf43afd0f2692"
   integrity sha512-pb/ApNrUz+CW+8KFgO7i8uRFByCbYJJPyWB4TszzUjZAJ12aX+Y+abJaUHn3sFPTXJOwO+bx9lUnxL9t5FKsKQ==
 
-eslint-plugin-vue@^7.11.0:
-  version "7.11.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-vue/-/eslint-plugin-vue-7.11.0.tgz#c19b098899b7e3cd692beffbbe73611064ef1ea6"
-  integrity sha512-Qwo8wilqnOXnG9B5auEiTstyaHefyhHd5lEhhxemwXoWsAxIW2yppzuVudowC5n+qn1nMLNV9TANkTthBK7Waw==
+eslint-plugin-vue@^7.12.1:
+  version "7.12.1"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-vue/-/eslint-plugin-vue-7.12.1.tgz#ef6499ce4fe0566659c8e12c71713f5308630a76"
+  integrity sha512-xHf/wCt88qmzqQerjaSteUFGASj7fPreglKD4ijnvoKRkoSJ3/H3kuJE8QFFtc+2wjw6hRDs834HH7vpuTJQzg==
   dependencies:
     eslint-utils "^2.1.0"
     natural-compare "^1.4.0"
