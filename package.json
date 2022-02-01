@@ -39,7 +39,7 @@
     "eslint-plugin-custom-rules": "file:./test/rules-1/custom-rules",
     "eslint-plugin-html": "^6.2.0",
     "eslint-plugin-markdown": "^2.2.1",
-    "eslint-plugin-nova": "^1.6.1",
+    "eslint-plugin-nova": "^1.6.2",
     "eslint-plugin-vue": "^7.18.0",
     "jest": "^27.4.2",
     "onchange": "^7.1.0",
