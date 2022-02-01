@@ -345,10 +345,10 @@
   resolved "https://registry.yarnpkg.com/@html-eslint/eslint-plugin/-/eslint-plugin-0.13.0.tgz#6e4ba25e8078146686e1bcbf60ccc55ec343a9a7"
   integrity sha512-W8MgBOFYzJPtmqIm4/sWADEtR7k/5LEoL6MrejIF/tgBpfoTyxbtXEtCcHcd+PfuFx9EMeGcP1jkzLjGkRZTKQ==
 
-"@html-eslint/parser@^0.13.0":
-  version "0.13.0"
-  resolved "https://registry.yarnpkg.com/@html-eslint/parser/-/parser-0.13.0.tgz#62a2c51c2b8f22249dd5a3bf9390b447a86902bb"
-  integrity sha512-Hmbo3HH4dWsFfyypOAQ07mIBCO0Byx7sGO4wdlz3y8FkAuZNsG/yr3aFWYo0y/rRqny/s8daDZtRktu1WUv/lQ==
+"@html-eslint/parser@^0.13.1":
+  version "0.13.1"
+  resolved "https://registry.yarnpkg.com/@html-eslint/parser/-/parser-0.13.1.tgz#bb7891224dbedd7ef5057b5af4fc85c0afb29411"
+  integrity sha512-FEBWYE+ifxjSn13Dd6gjW1RYmcMNRObvw9zWpWP6bdJYGHTegxil5VcOX9GaJ4LPatw6a2sOb850DJvnIUKr4g==
 
 "@humanwhocodes/config-array@^0.5.0":
   version "0.5.0"
