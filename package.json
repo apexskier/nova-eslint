@@ -43,7 +43,7 @@
     "eslint-plugin-vue": "^7.18.0",
     "jest": "^27.4.2",
     "onchange": "^7.1.0",
-    "prettier": "^2.5.0",
+    "prettier": "^2.5.1",
     "rollup": "^2.62.0",
     "rollup-plugin-typescript2": "^0.31.1",
     "ts-jest": "^27.1.2",
