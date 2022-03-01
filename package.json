@@ -41,7 +41,7 @@
     "eslint-plugin-markdown": "^2.2.1",
     "eslint-plugin-nova": "^1.6.2",
     "eslint-plugin-vue": "^7.18.0",
-    "jest": "^27.4.7",
+    "jest": "^27.5.1",
     "onchange": "^7.1.0",
     "prettier": "^2.5.1",
     "rollup": "^2.66.1",
