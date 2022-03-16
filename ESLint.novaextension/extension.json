@@ -3,12 +3,13 @@
   "name": "ESLint",
   "organization": "Cameron Little",
   "description": "Lint your code with ESLint.",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "categories": ["issues", "formatters", "commands"],
   "homepage": "https://github.com/apexskier/nova-eslint#readme",
   "repository": "https://github.com/apexskier/nova-eslint",
   "bugs": "https://github.com/apexskier/nova-eslint/issues",
   "license": "MIT",
+  "min_runtime": "9.0",
 
   "main": "main.dist.js",
 

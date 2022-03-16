@@ -30,7 +30,7 @@ If applicable, add screenshots to help explain your problem.
 **Environment**
 
 - Nova version: <!-- [e.g. 2 (213794)] get this from Nova > About Nova -->
-- Extension version: <!-- [e.g. 1.7.0] get this from the Nova Extension Library -->
+- Extension version: <!-- [e.g. 1.7.1] get this from the Nova Extension Library -->
 - ESLint version: <!-- [e.g. v7.12.0] get this from your project, e.g. run `yarn run eslint --version` in your terminal -->
 - macOS version: <!-- [e.g. 10.15.5 (19F101)] get this from  > About This Mac -->
 - NodeJS information:

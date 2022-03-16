@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.7.1
+
+- Fix for Nova 9
+
 ## v1.7.0
 
 ### Added
