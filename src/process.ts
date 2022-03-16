@@ -219,10 +219,7 @@ export function runLintPass(
     return disposable;
   }
   const eslint = eslintPath;
-  // remove file:/Volumes/Macintosh HD from uri
-  const cleanPath = path
-    ? "/" + decodeURI(path).split("/").slice(5).join("/")
-    : null;
+  const cleanPath = path?.replace("file://", "") ?? null;
 
   disposable.add(
     verifySupportingPlugin(eslint, syntax, cleanPath, (message) => {
@@ -261,8 +258,7 @@ export function runFixPass(
     return disposable;
   }
   const eslint = eslintPath;
-  // remove file:/Volumes/Macintosh HD from uri
-  const cleanPath = "/" + decodeURI(path).split("/").slice(5).join("/");
+  const cleanPath = path.replace("file://", "");
 
   disposable.add(
     verifySupportingPlugin(eslint, syntax, cleanPath, (message) => {
