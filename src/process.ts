@@ -219,7 +219,7 @@ export function runLintPass(
     return disposable;
   }
   const eslint = eslintPath;
-  const cleanPath = path ? path.replace('file://', '') : null;
+  const cleanPath = path?.replace("file://", "") ?? null;
 
   disposable.add(
     verifySupportingPlugin(eslint, syntax, cleanPath, (message) => {
@@ -258,7 +258,7 @@ export function runFixPass(
     return disposable;
   }
   const eslint = eslintPath;
-  const cleanPath = path.replace('file://', '');
+  const cleanPath = path.replace("file://", "");
 
   disposable.add(
     verifySupportingPlugin(eslint, syntax, cleanPath, (message) => {
