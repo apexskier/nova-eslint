@@ -1,5 +1,9 @@
 # Changelog
 
+## future
+
+- Revert fixes for Nova 9. See #277 for context.
+
 ## v1.7.1
 
 - Fix for Nova 9
