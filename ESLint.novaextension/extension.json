@@ -9,7 +9,6 @@
   "repository": "https://github.com/apexskier/nova-eslint",
   "bugs": "https://github.com/apexskier/nova-eslint/issues",
   "license": "MIT",
-  "min_runtime": "9.0",
 
   "main": "main.dist.js",
 
