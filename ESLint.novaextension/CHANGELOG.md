@@ -1,5 +1,11 @@
 # Changelog
 
+## future
+
+### Fixed
+
+- Fixed broken file uri handling for Nova >=9.
+
 ## v1.7.2
 
 - Revert fixes for Nova 9. See #277 for context.
