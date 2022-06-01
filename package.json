@@ -40,7 +40,7 @@
     "eslint-plugin-html": "^6.2.0",
     "eslint-plugin-markdown": "^2.2.1",
     "eslint-plugin-nova": "^1.7.0",
-    "eslint-plugin-vue": "^7.18.0",
+    "eslint-plugin-vue": "^9.0.1",
     "jest": "^27.5.1",
     "onchange": "^7.1.0",
     "prettier": "^2.6.2",
