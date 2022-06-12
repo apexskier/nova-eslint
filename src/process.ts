@@ -7,6 +7,8 @@ let eslintPath: string | null = null;
 let eslintConfigPath: string | null = null;
 let eslintRulesDirs: Array<string> | null = null;
 
+const sep = "/";
+
 // TODO: Clean up these disposables on deactivation
 nova.config.onDidChange("apexskier.eslint.config.eslintPath", async () => {
   eslintPath = await getEslintPath();
@@ -201,6 +203,57 @@ function addConfigArguments(toArgs: Array<string>) {
   }
 }
 
+function rootDrive() {
+  // Until Nova 9, path expansion functions like “normalize()” and “expanduser()”
+  // returned paths including the root volume mount point (by default,
+  // “/Volumes/Macintosh HD”). Expanding “/” thus gave us the mount point.
+  const expanded = nova.path.normalize(sep);
+  if (expanded !== sep) return expanded;
+
+  // Since Nova 9, path expansion functions like “normalize()” and “expanduser()”
+  // return paths in standard *nix notation, i.e. anchored at “/”. Normalising
+  // the mount point gives us “/”, while other volumes are unaffected.
+  const root = nova.path.join(sep, "Volumes");
+  for (const name of nova.fs.listdir(root)) {
+    const path = nova.path.join(root, name);
+    if (nova.path.normalize(path) === sep) return path;
+  }
+
+  // Our Hail Mary against contract breaches.
+  const macDefault = nova.path.join(root, "Macintosh HD");
+  if (nova.fs.stat(macDefault)?.isSymbolicLink()) return macDefault;
+  throw new Error(`Unable to locate mount point for root path “${sep}”`);
+}
+
+function nixalize(path: string) {
+  const normalised = nova.path.normalize(path);
+  if (!nova.path.isAbsolute(normalised)) return normalised;
+
+  const parts = nova.path.split(normalised);
+  if (parts.length < 3 || parts[1] !== "Volumes") return normalised;
+
+  const root = rootDrive();
+  const same = nova.path.split(root).every((el, idx) => parts[idx] === el);
+  return same ? nova.path.join(sep, ...parts.slice(3)) : normalised;
+}
+
+/**
+ * Convert a “file://” URI into a a path in a way that conforms to RFC 8089
+ * and is resistant to contract changes of Nova’s “decodeURI()” implementation.
+ * @see https://en.wikipedia.org/wiki/File_URI_scheme
+ * @param {string} uri - The URI to convert.
+ * @returns {string} The path, if uri was a file URI.
+ */
+function decodeFileURI(uri: string) {
+  const regex = new RegExp("^file:(//[^/]+)?(?=/)");
+  const fileURI = uri.replace(regex, "");
+  if (fileURI !== uri) {
+    const parts = nova.path.split(fileURI).map((part) => decodeURI(part));
+    return nova.path.join(...parts);
+  }
+  return "";
+}
+
 export function runLintPass(
   content: string,
   path: string | null,
@@ -219,7 +272,8 @@ export function runLintPass(
     return disposable;
   }
   const eslint = eslintPath;
-  const cleanPath = path?.replace("file://", "") ?? null;
+  // remove file:/Volumes/Macintosh HD from uri
+  const cleanPath = path ? nixalize(decodeFileURI(path)) : null;
 
   disposable.add(
     verifySupportingPlugin(eslint, syntax, cleanPath, (message) => {
@@ -258,7 +312,8 @@ export function runFixPass(
     return disposable;
   }
   const eslint = eslintPath;
-  const cleanPath = path.replace("file://", "");
+  // remove file:/Volumes/Macintosh HD from uri
+  const cleanPath = nixalize(decodeFileURI(path));
 
   disposable.add(
     verifySupportingPlugin(eslint, syntax, cleanPath, (message) => {
