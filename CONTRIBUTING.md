@@ -34,4 +34,4 @@ All user-facing changes should be documented in [CHANGELOG.md](./CHANGELOG.md).
 
 Always run `yarn build` first, so the `ESLint.novaextension/node_modules` directory is cleared.
 
-Replace `future` in the changelog with a new version, following semver. Update the version in the [bug report template](./.github/ISSUE_TEMPLATE/bug_report.md), [`package.json`](./package.json), and [extension manifest](./ESLint.novaextension/extension.json).
+Replace `future` in the changelog with a new version, following semver. Update the version in the [bug report template](./.github/ISSUE_TEMPLATE/bug_report.md) and [extension manifest](./ESLint.novaextension/extension.json).

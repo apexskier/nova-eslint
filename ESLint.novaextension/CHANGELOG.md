@@ -1,6 +1,6 @@
 # Changelog
 
-## future
+## v1.7.3
 
 ### Fixed
 
