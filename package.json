@@ -24,7 +24,7 @@
     "url": "https://github.com/apexskier/nova-eslint/issues"
   },
   "devDependencies": {
-    "@html-eslint/eslint-plugin": "^0.13.1",
+    "@html-eslint/eslint-plugin": "^0.13.2",
     "@html-eslint/parser": "^0.13.1",
     "@rollup/plugin-commonjs": "^22.0.0",
     "@rollup/plugin-node-resolve": "^13.3.0",
