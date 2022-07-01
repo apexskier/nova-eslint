@@ -523,10 +523,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@html-eslint/eslint-plugin@^0.13.1":
-  version "0.13.1"
-  resolved "https://registry.yarnpkg.com/@html-eslint/eslint-plugin/-/eslint-plugin-0.13.1.tgz#342233c2e19d10962d34c1f808643fddd40cca6c"
-  integrity sha512-D2pum/w6cfahxoGtueZVCLIC4OoG0mOfisxgSC4hsIpuapZHVNpTy4owizwoww1ZALHy6OMkWzTsp7zXIv3SbQ==
+"@html-eslint/eslint-plugin@^0.13.2":
+  version "0.13.2"
+  resolved "https://registry.yarnpkg.com/@html-eslint/eslint-plugin/-/eslint-plugin-0.13.2.tgz#5e7e6242b912c740467266671026e06019325249"
+  integrity sha512-44r088HnispQAAT7Mfb+tCy/T7qEAhDb313KsOSUIFwOgw8A2ITLMZRoZWDJjYgyAMnp1FovTB4A+ujKD11RKA==
 
 "@html-eslint/parser@^0.13.1":
   version "0.13.1"
