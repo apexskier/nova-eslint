@@ -917,10 +917,10 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-13.7.4.tgz#76c3cb3a12909510f52e5dc04a6298cdf9504ffd"
   integrity sha512-oVeL12C6gQS/GAExndigSaLxTrKpQPxewx9bOcwfvJiJge4rr7wNaph4J+ns5hrmIV2as5qxqN8YKthn9qh0jw==
 
-"@types/nova-editor-node@^4.1.7":
-  version "4.1.7"
-  resolved "https://registry.yarnpkg.com/@types/nova-editor-node/-/nova-editor-node-4.1.7.tgz#b24dc182c8a8ee687e033db9b3e616c1478df554"
-  integrity sha512-K2gA39VAaMxbDTA//zNhaITILBKGRFwju1/CbEt7YHS9fObQU11m4mMJo1zBs3+sxCuBGbUY3/2Wnd8hQdhOvA==
+"@types/nova-editor-node@^4.1.9":
+  version "4.1.9"
+  resolved "https://registry.yarnpkg.com/@types/nova-editor-node/-/nova-editor-node-4.1.9.tgz#0561c6adaaa945c52d219a76ded4a58c3a7b83ad"
+  integrity sha512-+WOZiMHVs08QenjKG63qjXyX2oNnqWnLUCjzuLJmSS592xq33JfpuHxJSl42lyiMeYc0U3VgzVtPouV3BDrrzQ==
 
 "@types/prettier@^2.1.5":
   version "2.2.3"
