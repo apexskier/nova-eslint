@@ -26,7 +26,6 @@ async function npmBin(): Promise<string> {
 
 // this determines where the eslint executable is
 export async function getEslintPath(): Promise<string | null> {
-  const npmBinDir = await npmBin();
   let execPath: string;
   const configExecPath =
     nova.workspace.config.get("apexskier.eslint.config.eslintPath", "string") ??
@@ -43,6 +42,7 @@ export async function getEslintPath(): Promise<string | null> {
       return null;
     }
   } else {
+    const npmBinDir = await npmBin();
     execPath = nova.path.join(npmBinDir, "eslint");
   }
 
