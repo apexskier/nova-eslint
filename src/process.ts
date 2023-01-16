@@ -1,28 +1,13 @@
 import type { Linter, ESLint } from "eslint";
-import { getEslintPath } from "./getEslintPath";
 import { getEslintConfig } from "./getEslintConfig";
 import { getRulesDirs } from "./getRulesDirs";
 
-let eslintPath: string | null = null;
 let eslintConfigPath: string | null = null;
 let eslintRulesDirs: Array<string> | null = null;
 
 const sep = "/";
 
 // TODO: Clean up these disposables on deactivation
-nova.config.onDidChange("apexskier.eslint.config.eslintPath", async () => {
-  eslintPath = await getEslintPath();
-  console.log("Updating ESLint executable globally", eslintPath);
-  nova.commands.invoke("apexskier.eslint.config.lintAllEditors");
-});
-nova.workspace.config.onDidChange(
-  "apexskier.eslint.config.eslintPath",
-  async () => {
-    eslintPath = await getEslintPath();
-    console.log("Updating ESLint executable for workspace", eslintPath);
-    nova.commands.invoke("apexskier.eslint.config.lintAllEditors");
-  }
-);
 nova.config.onDidChange("apexskier.eslint.config.eslintConfigPath", () => {
   eslintConfigPath = getEslintConfig();
   console.log("Updating ESLint config globally", eslintConfigPath);
@@ -51,7 +36,6 @@ nova.workspace.config.onDidChange(
 );
 
 export async function initialize() {
-  eslintPath = await getEslintPath();
   eslintConfigPath = getEslintConfig();
   eslintRulesDirs = getRulesDirs();
 }
@@ -72,13 +56,12 @@ export type ESLintRunResults = ReadonlyArray<ESLint.LintResult>;
 // - if the eslint config or installed packages change it'll be hard to invalidate the cache
 // - handling file renaming?
 function getConfig(
-  eslint: string,
   forPath: string,
   // eslint-disable-next-line no-unused-vars
   callback: (config: Linter.Config) => void
 ): Disposable {
-  const process = new Process(eslint, {
-    args: ["--print-config", forPath],
+  const process = new Process("/usr/bin/env", {
+    args: ["npm", "exec", "--package=eslint", "--", "eslint", "--print-config", forPath],
     cwd: nova.workspace.path || undefined,
     stdio: "pipe",
   });
@@ -106,7 +89,6 @@ function getConfig(
 }
 
 function verifySupportingPlugin(
-  eslint: string,
   syntax: string | null,
   path: string | null,
   // eslint-disable-next-line no-unused-vars
@@ -116,7 +98,7 @@ function verifySupportingPlugin(
   // check in the config for this file
   const supportingPlugins = syntax && syntaxToSupportingPlugins[syntax];
   if (supportingPlugins && path) {
-    return getConfig(eslint, path, (config) => {
+    return getConfig(path, (config) => {
       if (
         !config.plugins?.some((plugin) => supportingPlugins.includes(plugin))
       ) {
@@ -139,13 +121,12 @@ function verifySupportingPlugin(
 class ESLintProcess implements Disposable {
   private _process: Process;
   constructor(
-    eslint: string,
     args: string[],
     // eslint-disable-next-line no-unused-vars
     callback: (output: ESLintRunResults) => void
   ) {
-    this._process = new Process(eslint, {
-      args,
+    this._process = new Process("/usr/bin/env", {
+      args: ["/usr/bin/env", "npm", "exec", "--package", "eslint", "--", "eslint", ...args],
       cwd: nova.workspace.path || undefined,
       stdio: "pipe",
     });
@@ -267,16 +248,11 @@ export function runLintPass(
       "ESLint used without a workspace path, this is unlikely to work properly"
     );
   }
-  if (!eslintPath) {
-    console.warn("No ESLint path");
-    return disposable;
-  }
-  const eslint = eslintPath;
   // remove file:/Volumes/Macintosh HD from uri
   const cleanPath = path ? nixalize(decodeFileURI(path)) : null;
 
   disposable.add(
-    verifySupportingPlugin(eslint, syntax, cleanPath, (message) => {
+    verifySupportingPlugin(syntax, cleanPath, (message) => {
       if (message) {
         console.info(message);
       } else {
@@ -285,7 +261,7 @@ export function runLintPass(
           args.unshift("--stdin-filename", cleanPath);
         }
         addConfigArguments(args);
-        const process = new ESLintProcess(eslint, args, callback);
+        const process = new ESLintProcess(args, callback);
         disposable.add(process);
         process.write(content);
       }
@@ -307,23 +283,18 @@ export function runFixPass(
       "ESLint used without a workspace path, this is unlikely to work properly"
     );
   }
-  if (!eslintPath) {
-    console.warn("No ESLint path");
-    return disposable;
-  }
-  const eslint = eslintPath;
   // remove file:/Volumes/Macintosh HD from uri
   const cleanPath = nixalize(decodeFileURI(path));
 
   disposable.add(
-    verifySupportingPlugin(eslint, syntax, cleanPath, (message) => {
+    verifySupportingPlugin(syntax, cleanPath, (message) => {
       if (message) {
         console.info(message);
       } else {
         const args = ["--fix", "--format=json"];
         args.unshift(cleanPath);
         addConfigArguments(args);
-        const process = new ESLintProcess(eslint, args, callback);
+        const process = new ESLintProcess(args, callback);
         disposable.add(process);
       }
     })
