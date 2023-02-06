@@ -2,43 +2,43 @@ import type { Linter, ESLint } from "eslint";
 import { getEslintConfig } from "./getEslintConfig";
 import { getRulesDirs } from "./getRulesDirs";
 
-let eslintConfigPath: string | null = null;
-let eslintRulesDirs: Array<string> | null = null;
+const eslintConfigPath: string | null = null;
+const eslintRulesDirs: Array<string> | null = null;
 
 const sep = "/";
 
-// TODO: Clean up these disposables on deactivation
-nova.config.onDidChange("apexskier.eslint.config.eslintConfigPath", () => {
-  eslintConfigPath = getEslintConfig();
-  console.log("Updating ESLint config globally", eslintConfigPath);
-  nova.commands.invoke("apexskier.eslint.config.lintAllEditors");
-});
-nova.workspace.config.onDidChange(
-  "apexskier.eslint.config.eslintConfigPath",
-  () => {
-    eslintConfigPath = getEslintConfig();
-    console.log("Updating ESLint config for workspace", eslintConfigPath);
-    nova.commands.invoke("apexskier.eslint.config.lintAllEditors");
-  }
-);
-nova.config.onDidChange("apexskier.eslint.config.eslintRulesDirs", () => {
-  eslintRulesDirs = getRulesDirs();
-  console.log("Updating ESLint rules globally");
-  nova.commands.invoke("apexskier.eslint.config.lintAllEditors");
-});
-nova.workspace.config.onDidChange(
-  "apexskier.eslint.config.eslintRulesDirs",
-  () => {
-    eslintRulesDirs = getRulesDirs();
-    console.log("Updating ESLint rules for workspace");
-    nova.commands.invoke("apexskier.eslint.config.lintAllEditors");
-  }
-);
+// // TODO: Clean up these disposables on deactivation
+// nova.config.onDidChange("apexskier.eslint.config.eslintConfigPath", () => {
+//   eslintConfigPath = getEslintConfig();
+//   console.log("Updating ESLint config globally", eslintConfigPath);
+//   nova.commands.invoke("apexskier.eslint.config.lintAllEditors");
+// });
+// nova.workspace.config.onDidChange(
+//   "apexskier.eslint.config.eslintConfigPath",
+//   () => {
+//     eslintConfigPath = getEslintConfig();
+//     console.log("Updating ESLint config for workspace", eslintConfigPath);
+//     nova.commands.invoke("apexskier.eslint.config.lintAllEditors");
+//   }
+// );
+// nova.config.onDidChange("apexskier.eslint.config.eslintRulesDirs", () => {
+//   eslintRulesDirs = getRulesDirs();
+//   console.log("Updating ESLint rules globally");
+//   nova.commands.invoke("apexskier.eslint.config.lintAllEditors");
+// });
+// nova.workspace.config.onDidChange(
+//   "apexskier.eslint.config.eslintRulesDirs",
+//   () => {
+//     eslintRulesDirs = getRulesDirs();
+//     console.log("Updating ESLint rules for workspace");
+//     nova.commands.invoke("apexskier.eslint.config.lintAllEditors");
+//   }
+// );
 
-export async function initialize() {
-  eslintConfigPath = getEslintConfig();
-  eslintRulesDirs = getRulesDirs();
-}
+// export async function initialize() {
+//   eslintConfigPath = getEslintConfig();
+//   eslintRulesDirs = getRulesDirs();
+// }
 
 const syntaxToSupportingPlugins: {
   [syntax: string]: ReadonlyArray<string> | undefined;
@@ -60,6 +60,7 @@ function getConfig(
   // eslint-disable-next-line no-unused-vars
   callback: (config: Linter.Config) => void
 ): Disposable {
+  nova.config.get
   const process = new Process("/usr/bin/env", {
     args: ["npm", "exec", "--package=eslint", "--", "eslint", "--print-config", forPath],
     cwd: nova.workspace.path || undefined,

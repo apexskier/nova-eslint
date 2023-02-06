@@ -35,20 +35,13 @@
     {
       "key": "apexskier.eslint.config.eslintPath",
       "title": "ESLint executable",
+      "description": "This should only generally be needed with a system npm install of <7.0.0",
       "type": "path"
     },
     {
-      "key": "apexskier.eslint.config.eslintConfigPath",
-      "title": "ESLint configuration",
-      "type": "path"
-    },
-    {
-      "key": "apexskier.eslint.config.eslintRulesDirs",
-      "title": "Rules directories",
-      "link": "https://eslint.org/docs/user-guide/command-line-interface#-rulesdir",
-      "type": "pathArray",
-      "allowFiles": false,
-      "allowFolders": true
+      "key": "apexskier.eslint.config.eslintArguments",
+      "title": "ESLint arguments",
+      "type": "stringArray"
     }
   ],
 
@@ -61,26 +54,9 @@
       "default": "Inherit from Global Settings"
     },
     {
-      "key": "apexskier.eslint.config.eslintPath",
-      "title": "ESLint executable",
-      "type": "path",
-      "relative": true
-    },
-    {
-      "key": "apexskier.eslint.config.eslintConfigPath",
-      "title": "ESLint configuration",
-      "link": "https://eslint.org/docs/user-guide/configuring#configuration-file-formats",
-      "type": "path",
-      "relative": true
-    },
-    {
-      "key": "apexskier.eslint.config.eslintRulesDirs",
-      "title": "Rules directories",
-      "link": "https://eslint.org/docs/user-guide/command-line-interface#-rulesdir",
-      "type": "pathArray",
-      "relative": true,
-      "allowFiles": false,
-      "allowFolders": true
+      "key": "apexskier.eslint.config.eslintArguments",
+      "title": "ESLint arguments",
+      "type": "stringArray",
     }
   ],
 
