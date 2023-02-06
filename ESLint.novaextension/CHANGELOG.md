@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.7.4
+
+### Fixed
+
+- Allow workaround for removal of `npm bin` in npm 9
+
 ## v1.7.3
 
 ### Fixed
