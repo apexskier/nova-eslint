@@ -1,7 +1,7 @@
-async function npmBin(): Promise<string> {
+async function npmRoot(): Promise<string> {
   return new Promise<string>((resolve, reject) => {
     const process = new Process("/usr/bin/env", {
-      args: ["npm", "bin"],
+      args: ["npm", "root"],
       cwd: nova.workspace.path || nova.extension.path,
       stdio: ["ignore", "pipe", "pipe"],
       env: {
@@ -12,12 +12,12 @@ async function npmBin(): Promise<string> {
     process.onStdout((o) => {
       result += o;
     });
-    process.onStderr((e) => console.warn("npm bin:", e.trimRight()));
+    process.onStderr((e) => console.warn("npm root:", e.trimRight()));
     process.onDidExit((status) => {
       if (status === 0) {
         resolve(result.trim());
       } else {
-        reject(new Error("failed to npm bin"));
+        reject(new Error("failed to npm root"));
       }
     });
     process.start();
@@ -42,8 +42,9 @@ export async function getEslintPath(): Promise<string | null> {
       return null;
     }
   } else {
-    const npmBinDir = await npmBin();
-    execPath = nova.path.join(npmBinDir, "eslint");
+    const npmRootDir = await npmRoot();
+    execPath = nova.path.join(npmRootDir, ".bin/eslint");
+    console.log(execPath);
   }
 
   if (!nova.fs.access(execPath, nova.fs.X_OK)) {
