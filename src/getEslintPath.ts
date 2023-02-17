@@ -43,7 +43,7 @@ export async function getEslintPath(): Promise<string | null> {
     }
   } else {
     const npmRootDir = await npmRoot();
-    execPath = nova.path.join(npmRootDir, ".bin/eslint");
+    execPath = nova.path.join(npmRootDir, ".bin", "eslint");
   }
 
   if (!nova.fs.access(execPath, nova.fs.X_OK)) {
